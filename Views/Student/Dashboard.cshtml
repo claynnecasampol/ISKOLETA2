@@ -1,0 +1,238 @@
+﻿@model FITNSS.Models.StudentProfileModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="fs-4 text-muted m-0">Good Morning</p>
+                    <h2 class="m-0 mb-3">
+                        Hello, Franz
+                    </h2>
+                </div>
+                <div class="position-relative">
+                    <!-- Notification Bell -->
+                    <svg id="notifBell" width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" style="cursor:pointer;">
+                        <path d="M12 2C16.9706 2 21 6.04348 21 11.0314V20H3V11.0314C3 6.04348 7.02944 2 12 2ZM9.5 21H14.5C14.5 22.3807 13.3807 23.5 12 23.5C10.6193 23.5 9.5 22.3807 9.5 21Z"></path>
+                    </svg>
+
+                    <!-- Notification Dropdown -->
+                    <div id="notifDropdown" class="notifications position-absolute" style="display:none; top:35px; right:0; width:350px; height:400px; background:white; border:1px solid #ccc; border-radius:5px; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.2);">
+                        <div class="border-bottom p-2">
+                            <h5>Notifications</h5>
+                        </div>
+                        <div class="p-2" style="height:350px;overflow-y:auto;">
+                            @if (Model.Notifications != null && Model.Notifications.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var notif in Model.Notifications)
+                                    {
+                                        <div class="border-bottom">
+                                            <p class="m-0">@notif.Description</p>
+                                            <small class="text-muted">@notif.TimeStamp</small>
+                                        </div>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No notifications yet.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div>
+                <div class="row d-flex" style="row-gap: 1rem;">
+                    <div class="col-12 col-lg-12">
+                        <div class="card py-4 px-3 border-3 border-dark" style="border-radius: 20px;">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="m-0">Activity</h3>
+                                @* <select class="form-select w-25"> *@
+                                @*     <option value="Weekly">Weekly</option> *@
+                                @*     <option value="Monthly">Monthly</option> *@
+                                @* </select> *@
+                            </div>
+                            <div class="card-body p-3 rounded-5">
+                                <canvas id="activityChart" height="60"></canvas>
+                                <div style="display:flex; justify-content:space-around; margin-top:20px;">
+                                    <div class="text-center">
+                                        <small class="m-0">Total Heartbeat</small>
+                                        <h3 class="m-0 heart-beat-value">10,000</h3>
+                                        <small class="m-0 heart-beat-day">Friday</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <small class="m-0">Total Steps</small>
+                                        <h3 class="m-0 steps-value">1,200</h3>
+                                        <small class="m-0 steps-day">Friday</small>
+                                    </div>
+                                    <div class="text-center">
+                                        <small class="m-0">Total Calories</small>
+                                        <h3 class="m-0 calories-value">5,000</h3>
+                                        <small class="m-0 calories-day">Friday</small>
+                                    </div>
+                                    <div class="text-center" style="color:red;">
+                                        <small class="m-0">Total Sleep</small>
+                                        <h3 class="m-0">6hrs</h3>
+                                        <small class="m-0">Friday</small>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 border border-2 border-dark bg-danger" style="border-radius: 20px;">
+                              
+                                <div>
+                                    <p class="m-0 fs-4 text-white">
+                                        <svg width="60" height="60" class="p-2 rounded-circle bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z"></path></svg>
+                                        Heartbeat</p>
+                                    <h1 class="mt-4 fw-bold text-white">@ViewBag.HeartbeatValue bpm</h1>
+                                    <p class="text-white m-0">Target-80bpm</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 border border-2 border-dark bg-danger" style="border-radius: 20px;">
+                                <div>
+                                    <p class="m-0 fs-4 text-white">
+                                        <svg width="60" height="60" class="p-2 rounded-circle bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M9.82986 8.78986L7.99998 9.45588V13H5.99998V8.05H6.015L11.2834 6.13247C11.5274 6.03855 11.7922 5.99162 12.0648 6.0008C13.1762 6.02813 14.1522 6.75668 14.4917 7.82036C14.678 8.40431 14.848 8.79836 15.0015 9.0025C15.9138 10.2155 17.3653 11 19 11V13C16.8253 13 14.8823 12.0083 13.5984 10.4526L12.9008 14.4085L15 16.17V23H13V17.1025L10.7307 15.1984L10.003 19.3253L3.10938 18.1098L3.45667 16.1401L8.38071 17.0084L9.82986 8.78986ZM13.5 5.5C12.3954 5.5 11.5 4.60457 11.5 3.5C11.5 2.39543 12.3954 1.5 13.5 1.5C14.6046 1.5 15.5 2.39543 15.5 3.5C15.5 4.60457 14.6046 5.5 13.5 5.5Z"></path></svg>
+                                        Steps
+                                    </p>
+                                    <h1 class="mt-4 fw-bold text-white">@ViewBag.StepsValue</h1>
+                                    <p class="text-white m-0">Target-12,000 per day</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 border border-2 border-dark bg-danger" style="border-radius: 20px;">
+                                <div>
+                                    <p class="m-0 fs-4 text-white">
+                                        <svg width="60" height="60" class="p-2 rounded-circle bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12 23C7.85786 23 4.5 19.6421 4.5 15.5C4.5 13.3462 5.40786 11.4045 6.86179 10.0366C8.20403 8.77375 11.5 6.49951 11 1.5C17 5.5 20 9.5 14 15.5C15 15.5 16.5 15.5 19 13.0296C19.2697 13.8032 19.5 14.6345 19.5 15.5C19.5 19.6421 16.1421 23 12 23Z"></path></svg>
+                                        Calories
+                                    </p>
+                                    <h1 class="mt-4 fw-bold text-white">@ViewBag.CaloriesValue kcal</h1>
+                                    <p class="text-white m-0">Target-150 kcal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("RightSidebar", Model)
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Labels (days) - from your database
+    var days = @Html.Raw(ViewBag.Days);
+    // Datasets - from your database
+    var heartbeats = @Html.Raw(ViewBag.Heartbeats);
+    var steps = @Html.Raw(ViewBag.Steps ?? "[]");
+    var calories = @Html.Raw(ViewBag.Calories ?? "[]");
+
+    var ctx = document.getElementById('activityChart').getContext('2d');
+    var myChart = new Chart(ctx, {   // <--- ilagay sa variable
+        type: 'bar',
+        data: {
+            labels: days,
+            datasets: [
+                {
+                    label: 'Heartbeats',
+                    data: heartbeats,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    borderWidth: 1,
+                    barPercentage: 0.1,
+                },
+                {
+                    label: 'Steps',
+                    data: steps,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    borderWidth: 1,
+                    barPercentage: 0.1,
+                },
+                {
+                    label: 'Calories',
+                    data: calories,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    borderWidth: 1,
+                    barPercentage: 0.1,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    stacked: false
+                },
+                y: {
+                    beginAtZero: true,
+                    stacked: false
+                }
+            },
+            // click handler
+            onClick: function (evt) {
+                var points = myChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+                if (points.length) {
+                    var firstPoint = points[0];
+                    var datasetLabel = myChart.data.datasets[firstPoint.datasetIndex].label;
+                    var label = myChart.data.labels[firstPoint.index];
+                    var value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+
+                    if (datasetLabel === "Heartbeats") {
+                        document.querySelector(".heart-beat-value").textContent = value;
+                        document.querySelector(".heart-beat-day").textContent = label;
+                    } else if (datasetLabel === "Steps") {
+                        document.querySelector(".steps-value").textContent = value;
+                        document.querySelector(".steps-day").textContent = label;
+                    } else if (datasetLabel === "Calories") {
+                        document.querySelector(".calories-value").textContent = value;
+                        document.querySelector(".calories-day").textContent = label;
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+<script>
+    document.getElementById("notifBell").addEventListener("click", function () {
+        var dropdown = document.getElementById("notifDropdown");
+        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener("click", function(event){
+        var dropdown = document.getElementById("notifDropdown");
+        var bell = document.getElementById("notifBell");
+        if(!dropdown.contains(event.target) && !bell.contains(event.target)){
+            dropdown.style.display = "none";
+        }
+    });
+</script>
+

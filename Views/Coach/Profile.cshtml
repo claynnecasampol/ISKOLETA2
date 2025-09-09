@@ -1,0 +1,194 @@
+﻿@{
+    ViewData["Title"] = "Coach Profile";
+}
+@model FITNSS.Models.CoachProfileModel
+
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="mb-3">
+                <h2 class="m-0">Profile</h2>
+                <p class="fs-4 text-muted m-0">Manage your account information and coach verification</p>
+            </div>
+            <div class="card">
+                <form method="post" enctype="multipart/form-data" asp-controller="Coach" asp-action="Profile">
+                    <input type="hidden" name="userId" value="@Model.userId" />
+                    <div class="card-body m-3">
+                        <h2 class="mx-3">Edit Profile</h2>
+                        <div class="card-body m-0 d-flex align-items-center">
+                            <div class="px-3">
+                                <img id="profileImage" class="rounded-circle border border-2 border-dark" src="~/images/profile.png" alt="User Image" style="width:150px; height:150px;">
+                            </div>
+                            <div>
+                                <p class="m-0 fs-4 fw-bold">@Model.FirstName @Model.LastName</p>
+                                <p class="m-0 text-muted">EMAIL: @Model.Email</p>
+                                <p class="text-primary m-0 position-relative">
+                                    Change Photo
+                                    <input type="file" name="ProfilePhoto" id="ProfilePhoto" accept="image/*" class="form-control mt-1 position-absolute top-0 opacity-0" style="height: 20px;" />
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-12">
+                                    <div class="row" style="row-gap: 1rem;">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>First Name</label>
+                                                <input type="text" name="FirstName" class="form-control" value="@Model.FirstName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Last Name</label>
+                                                <input type="text" name="LastName" class="form-control" value="@Model.LastName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Age</label>
+                                                <input type="text" name="Age" class="form-control" value="@Model.Age" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" name="Email" class="form-control" value="@Model.Email" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Contact Number</label>
+                                                <input type="text" name="ContactNumber" class="form-control" value="@Model.ContactNumber" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Course</label>
+                                                <input type="text" name="Course" class="form-control" value="@Model.Course" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Year Level</label>
+                                                <input type="text" name="YearLevel" class="form-control" value="@Model.YearLevel" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Date of Birth</label>
+                                                <input type="date" name="DateOfBirth" class="form-control"
+                                                       value="@(Model.DateOfBirth != null ? Convert.ToDateTime(Model.DateOfBirth).ToString("yyyy-MM-dd") : "")" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Position</label>
+                                                <input type="text" name="Position" class="form-control" value="@Model.Position" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Sport</label>
+                                                <input type="text" name="Sport" class="form-control" value="@Model.Sport" />
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div id="expertiseWrapper">
+                                        @if (Model.ExpertiseList != null && Model.ExpertiseList.Count > 0)
+                                        {
+                                            foreach (var exp in Model.ExpertiseList)
+                                            {
+                                                <div class="row my-4 expertise-row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Expertise</label>
+                                                            <input type="text" name="Expertise" class="form-control" value="@exp" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="row my-4 expertise-row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Expertise</label>
+                                                        <input type="text" name="Expertise" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+
+                                    <div class="text-start mt-4">
+                                        <button type="button" id="addExpertise" class="btn btn-lg btn-danger">Add Another Expertise</button>
+                                    </div>
+                                </div>
+                            
+                                
+                            </div>
+                            <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-lg btn-danger">Save Profile</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    @Html.Partial("CoachRightSidebar")
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Check if the model has a ProfileImagePath
+            var profilePath = '@Model.ProfileImagePath';
+
+            if (profilePath && profilePath !== '') {
+                $('#profileImage').attr('src', profilePath);
+            }
+
+            // Optional: Preview image when user selects a new file
+            $('#ProfilePhoto').on('change', function (e) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profileImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
+
+             $(document).ready(function () {
+            $("#addExpertise").click(function () {
+                // clone yung unang row
+                var newRow = $(".expertise-row:first").clone();
+
+                // clear values sa bagong row
+                newRow.find("input").val("");
+
+                // append sa wrapper
+                $("#expertiseWrapper").append(newRow);
+            });
+        });
+
+    </script>
+}

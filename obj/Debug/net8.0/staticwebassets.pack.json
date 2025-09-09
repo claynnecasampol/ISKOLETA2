@@ -1,0 +1,357 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\FITNSS.bundle.scp.css",
+      "PackagePath": "staticwebassets\\FITNSS.va3ztrswvh.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\files\\7_TappyCapstone-FINAL.pdf",
+      "PackagePath": "staticwebassets\\files\\7_TappyCapstone-FINAL.pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\files\\Features (1) (1).pdf",
+      "PackagePath": "staticwebassets\\files\\Features (1) (1).pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\files\\H_26800231.pdf",
+      "PackagePath": "staticwebassets\\files\\H_26800231.pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\files\\RINCOMED_UI.pdf",
+      "PackagePath": "staticwebassets\\files\\RINCOMED_UI.pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\files\\RxVision-OCR-based-Medical-Prescription-Reader-Using-TrOCR-and-BioBERT-Manuscript-HLV.docx",
+      "PackagePath": "staticwebassets\\files\\RxVision-OCR-based-Medical-Prescription-Reader-Using-TrOCR-and-BioBERT-Manuscript-HLV.docx"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\6_top-view-desert-landscape-d-rendering-d-rendering-desert-landscape-mountain-range-desert-plants-148856173.jpg",
+      "PackagePath": "staticwebassets\\images\\6_top-view-desert-landscape-d-rendering-d-rendering-desert-landscape-mountain-range-desert-plants-148856173.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\7_b2hnyzbn9dlzhciqv9xx.jpg",
+      "PackagePath": "staticwebassets\\images\\7_b2hnyzbn9dlzhciqv9xx.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\7_car.png",
+      "PackagePath": "staticwebassets\\images\\7_car.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\7_pineapple-upside-down-cake-1658850950.webp",
+      "PackagePath": "staticwebassets\\images\\7_pineapple-upside-down-cake-1658850950.webp"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\7_rock.png",
+      "PackagePath": "staticwebassets\\images\\7_rock.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\7_sg-11134202-7rd4p-m7ukngkhrqyl10.jpg",
+      "PackagePath": "staticwebassets\\images\\7_sg-11134202-7rd4p-m7ukngkhrqyl10.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\Features (1).pdf",
+      "PackagePath": "staticwebassets\\images\\Features (1).pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\Group 1000002760.png",
+      "PackagePath": "staticwebassets\\images\\Group 1000002760.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\TappyCapstone-FINAL.pdf",
+      "PackagePath": "staticwebassets\\images\\TappyCapstone-FINAL.pdf"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\coin.png",
+      "PackagePath": "staticwebassets\\images\\coin.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\image 102.png",
+      "PackagePath": "staticwebassets\\images\\image 102.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\istockphoto-1372002650-612x612.jpg",
+      "PackagePath": "staticwebassets\\images\\istockphoto-1372002650-612x612.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\palada-moringa.jpg",
+      "PackagePath": "staticwebassets\\images\\palada-moringa.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\profile.png",
+      "PackagePath": "staticwebassets\\images\\profile.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\rock.png",
+      "PackagePath": "staticwebassets\\images\\rock.png"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\sg-11134202-7rd4p-m7ukngkhrqyl10.jpg",
+      "PackagePath": "staticwebassets\\images\\sg-11134202-7rd4p-m7ukngkhrqyl10.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\images\\top-view-desert-landscape-d-rendering-d-rendering-desert-landscape-mountain-range-desert-plants-148856173.jpg",
+      "PackagePath": "staticwebassets\\images\\top-view-desert-landscape-d-rendering-d-rendering-desert-landscape-mountain-range-desert-plants-148856173.jpg"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "D:\\C Sharp\\FITNSS\\FITNSS\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.FITNSS.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.FITNSS.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.FITNSS.props",
+      "PackagePath": "build\\FITNSS.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.FITNSS.props",
+      "PackagePath": "buildMultiTargeting\\FITNSS.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.FITNSS.props",
+      "PackagePath": "buildTransitive\\FITNSS.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

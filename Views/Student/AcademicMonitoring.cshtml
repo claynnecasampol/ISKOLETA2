@@ -1,0 +1,195 @@
+﻿@{
+    ViewData["Title"] = "Student AcademicMonitoring";
+}
+@model FITNSS.Models.StudentProfileModel
+
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="mb-3">
+                <h2 class="m-0">Academic Monitoring</h2>
+                <p class="fs-4 text-muted m-0">Submit your academic information to monitor your qualification as a student-athlete</p>
+            </div>
+            <div class="row tabs">
+                <div class="col-lg-6">
+                    <div class="tab active" data-target="#gradesView">Grades</div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="tab" data-target="#registrationView">Academic Registration</div>
+                </div>
+            </div>
+
+            <div id="gradesView" class="tab-content active">
+                <div class="card border-0" style="border-radius: 20px;">
+                    <form method="post" asp-controller="Student" asp-action="AcademicMonitoringGrade">
+                        <div class="card-body m-3">
+                            <h2 class="mx-3">Semestral Grade</h2>
+                            <input type="hidden" name="userId" class="form-control" value="@Model.userId" />
+
+                            <div class="card-body">
+                                <div id="subjectsWrapper">
+                                    <div class="row my-4 subject-row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Subject</label>
+                                                <input type="text" name="Subject[]" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Grade</label>
+                                                <input type="text" name="Grade[]" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-start mt-4">
+                                    <button type="button" id="addSubject" class="btn btn-lg btn-danger">Add Another Subject</button>
+                                </div>
+                                <div class="text-end mt-4">
+                                    <button type="submit" class="btn btn-lg btn-danger">Submit</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </form>
+                </div>
+                <br />
+                    <h2 class="mb-3">Grade Submission Details</h2>
+                <div class="card border-0" style="border-radius: 20px;">
+                    <div class="card-body m-3">
+                        <h2>@Model.FirstName @Model.LastName</h2>
+                        <div>
+                            <span class="badge bg-success">ACTIVE</span>
+                            <span class="badge bg-success">QUALIFIED</span>
+                        </div>
+                        <br />
+
+                        <ul class="list-group">
+                            <li class="list-group-item border-primary" style="background: #e0eeff5c;">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="fw-bold">Semester GWA: @ViewBag.GWA.ToString("0.00")</span>
+                                        <br />
+                                        <small>
+                                            Meets eligibility requirements ( <span style="text-decoration: underline;">&lt;</span>
+                                            2.5 )
+                                        </small>
+                                    </div>
+                                    <div>
+                                        <span class="fw-bold">Submission Date:</span>
+                                        <br />
+                                        <small>
+                                            November 15,2025
+                                        </small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <br />
+
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                                <span class="fw-bold">Verification Status:</span> Verified
+                            </li>
+                        </ul>
+                        <br />
+                        <table class="table table-bordered">
+                            <tr>
+                                <th colspan="2">Subject Grades</th>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Subject Name</th>
+                                <th class="text-muted">Grade</th>
+                            </tr>
+
+                                @foreach (var grade in (List<StudentAcademicMonitoringModel>)ViewBag.Grades)
+                                {
+                                    <tr>
+                                        <td>@grade.Subject</td>
+                                        <td class="fw-bold">@grade.Grade</td>
+                                    </tr>
+                                }
+                        </table>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div id="registrationView" class="tab-content card border-0" style="border-radius: 20px;">
+                <form method="post" asp-controller="Student" asp-action="AcademicMonitoringAcademicRegistration" enctype="multipart/form-data">
+                    <div class="card-body py-4 m-3">
+                        
+                        <input type="hidden" name="userId" class="form-control" value="@Model.userId" />
+
+                        @if (ViewBag.HasSubmitted)
+                        {
+                            <div class="text-center">
+                                <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                                <h1 class="text-muted text-center">Semestral Academic Certificate of Registration <br /> Submitted!</h1>
+                                <p class="fs-4 text-muted">Wait for a confirmation notification if your certificate of registration was verified.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <h2 class="mx-3 text-center">Certificate of Registration</h2>
+                            <div class="card-body">
+                                <div class="card border-2 text-center w-50 m-auto">
+                                    <div class="py-2 w-100 bg-light position-relative">
+                                        <label class="fs-4">Upload Certificate of Registration</label>
+                                        <input type="file" name="File" class="form-control position-absolute opacity-0" style="top: 0;" />
+                                    </div>
+                                </div>
+                                <div class="text-end mt-4">
+                                    <button type="submit" class="btn btn-lg btn-danger">Submit</button>
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+    @Html.Partial("RightSidebar")
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+      $(".tab").click(function() {
+        // alisin muna active state sa lahat
+        $(".tab").removeClass("active");
+        $(".tab-content").removeClass("active");
+
+        // idagdag active sa clicked tab
+        $(this).addClass("active");
+        $($(this).data("target")).addClass("active");
+      });
+    });
+
+
+        $(document).ready(function () {
+        $("#addSubject").click(function () {
+            // clone yung unang row
+            var newRow = $(".subject-row:first").clone();
+
+            // clear values sa bagong row
+            newRow.find("input").val("");
+
+            // append sa wrapper
+            $("#subjectsWrapper").append(newRow);
+        });
+    });
+
+
+</script>

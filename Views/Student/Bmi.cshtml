@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Student Bmi";
+}
+@model FITNSS.Models.StudentProfileModel
+
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="mb-3">
+                <h2 class="m-0">Health Sync Module</h2>
+            </div>
+            <div class="card border-0" style="border-radius: 20px;">
+                <form method="post" asp-controller="Student" asp-action="Bmi">
+                    <div class="card-body m-3">
+                        <h2 class="mx-3">Body Composition</h2>
+                        <input type="hidden" name="userId" class="form-control" value="@Model.userId" />
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-12">
+                                    <div class="row" style="row-gap: 1rem;">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Age</label>
+                                                <input type="text" name="Age" class="form-control" value="@Model.Age" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Weight</label>
+                                                <input type="text" name="Weight" class="form-control" value="@Model.Weight" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Height</label>
+                                                <input type="text" name="Height" class="form-control" value="@Model.Height" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-lg btn-danger">Save BMI</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <br />
+            <div class="card border-0" style="border-radius: 20px;">
+                    <div class="card-body m-3">
+                        <h2 class="mx-3">Smartwatch Pairing</h2>
+
+                        <div class="card-body">
+                            <p>To give you personalized insights and help you stay on top of your sports, we’ll be syncing key health data from your smartwatch to your ISKOLETA dashboard.</p>
+                            <p>Please confirm which metrics you’re comfortable sharing:</p>
+                            <ul>
+                                <li>BMI (Body Mass Index)</li>
+                                <li>Heart Rate</li>
+                                <li>Steps</li>
+                                <li>Sleep Duration</li>
+                            </ul>
+                        </div>
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("RightSidebar")
+</div>
+
+}

@@ -1,0 +1,448 @@
+﻿@{
+    ViewData["Title"] = "Student AthleteProfile";
+}
+@model FITNSS.Models.StudentProfileModel
+
+@{
+    var studentsApproved = ViewBag.StudentAthleteProfileAndRecords.StudentListApproved as List<FITNSS.Models.StudentAthleteProfileModel>;
+}
+
+
+<div class="d-flex">
+   
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="mb-3">
+                <h2 class="m-0">Student-Athlete Profile</h2>
+                <p class="fs-4 text-muted m-0">Complete your student-athlete profile for verification and program enrollment.</p>
+            </div>
+
+            @if (ViewBag.HasSubmitted)
+            {
+                <div class="card border-0" style="border-radius: 20px;">
+                    <div class="card-body py-4 m-3">
+                        <div class="text-center">
+                            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                            <h1 class="text-muted text-center">Athletic Profile Submitted!</h1>
+                            <p class="fs-4 text-muted">
+                                Your information is now under review by the
+                                Sports Development and Promotion Office (SDPO)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+
+                @if (studentsApproved != null) {
+                    @foreach (var student in studentsApproved){
+
+
+                        <div id="gradesView" class="tab-content active">
+                            <div class="card border-0" style="border-radius: 20px;">
+                                <form method="post" asp-controller="Student" asp-action="AthleteProfile" enctype="multipart/form-data">
+                                    <div class="card-body m-3">
+                                        <input type="hidden" name="userId" class="form-control" value="@Model.userId" />
+
+                                        <div class="card-body form-step active">
+                                            <h2 class="mx-3">I. PERSONAL INFORMATION</h2>
+                                            <div class="row my-4" style="row-gap: 1rem;">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Last Name *</label>
+                                                        <input type="text" class="form-control" value="@Model.LastName">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>First Name *</label>
+                                                        <input type="text" class="form-control" value="@Model.FirstName">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Event * (Please Specify your specialization)</label>
+                                                        <input type="text" name="Event" class="form-control" value="@student.Event">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Date of Birth *</label>
+                                                        <input type="date" class="form-control"
+                                                               value="@(student.DateOfBirth != null ? DateTime.Parse(student.DateOfBirth).ToString("yyyy-MM-dd") : "")">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Age</label>
+                                                        <input type="text" class="form-control" value="@student.Age">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Height (cm) *</label>
+                                                        <input type="text" class="form-control" value="@student.Height">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>Weight (kg) *</label>
+                                                        <input type="text" class="form-control" value="@student.Weight">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Email Address</label>
+                                                        <input type="email" class="form-control" value="@student.Email">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Contact Number *</label>
+                                                        <input type="text" name="GTwelveGwa" class="form-control" value="@Model.ContactNumber">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Home Address *</label>
+                                                        <input type="text" name="HomeAddress" class="form-control" value="@student.HomeAddress">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Provincial Address </label>
+                                                        <input type="text" name="ProvincialAddress" class="form-control" value="@student.ProvincialAddress">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Vaccination *</label>
+                                                        <select name="Vaccination" class="form-control">
+                                                            <option value="1st Dose" selected="@(student.Vaccination == "1st Dose")">1st Dose</option>
+                                                            <option value="2nd Dose" selected="@(student.Vaccination == "2nd Dose")">2nd Dose</option>
+                                                            <option value="3rd Dose" selected="@(student.Vaccination == "3rd Dose")">3rd Dose</option>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Philhealth Card Number</label>
+                                                        <input type="text" name="PhilhealthNumber" class="form-control" value="@student.PhilhealthNumber">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Coach</label>
+                                                        <select name="coachId" asp-for="coachId" asp-items="Model.Coaches" class="form-control">
+                                                            <option value="">-- Select Coach --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="text-end mt-4">
+                                                    <button type="button" class="btn btn-lg btn-danger next-btn">NEXT</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body form-step">
+                                            <h2 class="mx-3">II. Educational Background</h2>
+                                            <div class="row my-4">
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <label>Elementary Education</label>
+                                                        <label>Elementary  School*</label>
+                                                        <input type="text" name="ElementarySchool" class="form-control" value="@student.ElementarySchool">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>Year Graduated *</label>
+                                                        <input type="text" name="ElementaryYearGraduated" class="form-control" value="@student.ElementaryYearGraduated">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <label>Secondary Education</label>
+                                                        <label>Secondary  School*</label>
+                                                        <input type="text" name="SecondarySchool" class="form-control" value="@student.SecondarySchool">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>Year Graduated *</label>
+                                                        <input type="text" name="SecondaryYearGraduated" class="form-control" value="@student.SecondaryYearGraduated">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-8">
+                                                    <div class="form-group">
+                                                        <label>Senior High School</label>
+                                                        <label>Senior High  School*</label>
+                                                        <input type="text" name="SeniorHighSchool" class="form-control" value="@student.SeniorHighSchool">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>Year Graduated *</label>
+                                                        <input type="text" name="SeniorHighYearGraduated" class="form-control" value="@student.SeniorHighYearGraduated">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>SHS Track/Strand *</label>
+                                                        <select name="ShsTrackOrStrand" class="form-control">
+                                                            <option value="STEM">STEM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>G-10 GWA</label>
+                                                        <input type="text" name="GTenGwa" class="form-control" value="@student.GTenGwa">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>G-11 GWA</label>
+                                                        <input type="text" name="GElevenGwa" class="form-control" value="@student.GElevenGwa">
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label>G-12  GWA</label>
+                                                        <input type="text" name="GTwelveGwa" class="form-control" value="@student.GTwelveGwa">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Transfer Status</label>
+                                                        <input type="checkbox" name="TransferStatus"> I am a transferee
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Previous Program/Course</label>
+                                                        <input type="text" name="PrevProgramOrCourse" class="form-control" placeholder="Please pecify your previous program/course" value="@student.PrevProgramOrCourse">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end mt-4">
+                                                    <button type="button" class="btn btn-lg btn-danger next-btn">NEXT</button>
+                                                    <button type="button" class="btn btn-lg btn-secondary prev-btn">BACK</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card-body form-step">
+                                            <h2 class="mx-3">Sports Participation</h2>
+                                            <div class="text-start mt-4">
+                                                <button type="button" id="addTournament" class="btn btn-lg btn-danger">Add Tournament</button>
+                                            </div>
+                                            <div id="tournamentWrapper">
+                                                @foreach (var participation in student.Participations)
+                                                {
+                                                    <div class="row my-4 tournament-row">
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Name of Tournament</label>
+                                                                <input type="text" name="Name[]" class="form-control" value="@participation.Name" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Level</label>
+                                                                <select name="Level[]" class="form-control">
+                                                                    <option value="@participation.Level">@participation.Level</option>
+                                                                    <option value="Level1">Level1</option>
+                                                                    <option value="Level2">Level2</option>
+                                                                    <option value="Level3">Level3</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Year</label>
+                                                                <input type="text" name="Year[]" class="form-control" value="@participation.Year" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label>Award</label>
+                                                                <input type="text" name="Award[]" class="form-control" value="@participation.Award" />
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            </div>
+
+                                <div class="row my-4">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Sports Participation Portfolio</label>
+                                            <p>Please submit a PDF portfolio that includes all relevant documentation for your sports involvement. </p>
+                                            <p>This should contain:</p>
+                                            <ul>
+                                                <li>Certificates of Participation or Achievement</li>
+                                                <li>Photos or Screenshots of Events or Competitions</li>
+                                                <li>Official Proofs such as registration forms, team rosters, or event results</li>
+                                            </ul>
+                                            <p>Ensure the file is clearly labeled and organized by sport or event for easy verification. This portfolio will serve as formal evidence of your athletic participation.</p>
+                                            <input type="file" name="Portfolio" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end mt-4">
+                                    <button type="button" class="btn btn-lg btn-danger next-btn">NEXT</button>
+                                    <button type="button" class="btn btn-lg btn-secondary prev-btn">BACK</button>
+                                </div>
+                            </div>
+
+                            <div class="card-body form-step">
+                                <h2 class="mx-3">IV. Preferred Progam/Course</h2>
+                                <div class="row my-4">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>1st Choice *</label>
+                                            <select name="CourseOne" class="form-control">
+                                                            <option value="@student.CourseOne">@student.CourseOne</option>
+                                                 <option value="Bachelor of Science in Industrial Engineering (BSEE)">Bachelor of Science in Industrial Engineering (BSEE)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>2nd Choice *</label>
+                                            <select name="CourseTwo" class="form-control">
+                                                            <option value="@student.CourseTwo">@student.CourseTwo</option>
+                                                <option value="Bachelor of Secondary Education (BSED)">Bachelor of Secondary Education (BSED)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>3rd Choice *</label>
+                                            <select name="CourseThree" class="form-control">
+                                                            <option value="@student.CourseThree">@student.CourseThree</option>
+                                                <option value="Select program">Select program</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="text-end mt-4">
+                                        <button type="button" class="btn btn-lg btn-danger next-btn">NEXT</button>
+                                        <button type="button" class="btn btn-lg btn-secondary prev-btn">BACK</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="card-body form-step">
+                                <h2 class="mx-3">Document Upload</h2>
+                                <p class="fs-4 text-muted m-0">Upload required documents to complete your application</p>
+
+                                <div class="row my-4">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>2x2 ID Photo *</label>
+                                            <input type="file" name="Photo" class="form-control">
+                                        </div>
+                                    </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Terms and Conditions</label>
+                                                        <div>
+                                                            <input type="checkbox"
+                                                            @(student != null && student.studentAthleteProfileId != null ? "checked" : "") />
+                                                            <span>
+                                                                I certify that all information provided in this application is true and accurate to
+                                                                the best of my knowledge.
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <input type="checkbox"
+                                                            @(student != null && student.studentAthleteProfileId != null ? "checked" : "") />
+                                                            <span>
+                                                                I understand that providing false information may result in disqualification from
+                                                                the program.
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                    <div class="text-end mt-4">
+                                        <button type="submit" class="btn btn-lg btn-danger">Submit</button>
+                                        <button type="button" class="btn btn-lg btn-secondary prev-btn">BACK</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+
+
+                        </div>
+                    </form>
+                </div>               
+            </div>
+
+
+            }
+            }
+            }
+            
+        </div>
+    </div>
+    @Html.Partial("RightSidebar")
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+     
+
+
+        $(document).ready(function () {
+        $("#addTournament").click(function () {
+            // clone yung unang row
+            var newRow = $(".tournament-row:first").clone();
+
+            // clear values sa bagong row
+            newRow.find("input").val("");
+
+            // append sa wrapper
+            $("#tournamentWrapper").append(newRow);
+        });
+    });
+
+        $(document).ready(function () {
+        let currentStep = 0;
+        const steps = $(".form-step");
+
+        // Show first step
+        $(steps[currentStep]).addClass("active");
+
+        $(".next-btn").click(function () {
+            if (currentStep < steps.length - 1) {
+                $(steps[currentStep]).removeClass("active");
+                currentStep++;
+                $(steps[currentStep]).addClass("active");
+            }
+        });
+
+        $(".prev-btn").click(function () {
+            if (currentStep > 0) {
+                $(steps[currentStep]).removeClass("active");
+                currentStep--;
+                $(steps[currentStep]).addClass("active");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "SDPO Dashboard";
+}
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content">
+        <div class="container-fluid p-5">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Sports Development Program Office</p>
+            </div>
+            <div>
+                <div class="row d-flex" style="row-gap: 1rem;">
+                    <div class="col-12 col-lg-3">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 shadow rounded-5">
+                                <div class="">
+                                    <svg width="60" height="60" class="p-2 rounded-circle bg-danger bg-opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#b90012"><path d="M2 22C2 17.5817 5.58172 14 10 14C14.4183 14 18 17.5817 18 22H2ZM10 13C6.685 13 4 10.315 4 7C4 3.685 6.685 1 10 1C13.315 1 16 3.685 16 7C16 10.315 13.315 13 10 13ZM17.3628 15.2332C20.4482 16.0217 22.7679 18.7235 22.9836 22H20C20 19.3902 19.0002 17.0139 17.3628 15.2332ZM15.3401 12.9569C16.9728 11.4922 18 9.36607 18 7C18 5.58266 17.6314 4.25141 16.9849 3.09687C19.2753 3.55397 21 5.57465 21 8C21 10.7625 18.7625 13 16 13C15.7763 13 15.556 12.9853 15.3401 12.9569Z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="m-0 fs-4">Total Athletes</p>
+                                    <h1 class="m-0" style="color: #b90012;">247</h1>
+                                    <p class="text-success m-0">+12 this month</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 shadow rounded-5">
+                                <div class="">
+                                    <svg width="60" height="60" class="p-2 rounded-circle bg-opacity-50" style="background:#4effad80;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#00c134"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="m-0 fs-4">Active Athletes</p>
+                                    <h1 class="m-0" style="color: #00c134;">247</h1>
+                                    <p class="text-success m-0">80% of Total</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 shadow rounded-5">
+                                <div class="">
+                                    <svg width="60" height="60" class="p-2 rounded-circle bg-danger bg-opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#b90012"><path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13Z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="m-0 fs-4">Active Coaches</p>
+                                    <h1 class="m-0" style="color: #b90012;">247</h1>
+                                    <p class="text-success m-0">8 sports covered</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-3 shadow rounded-5">
+                                <div class="">
+                                    <svg width="60" height="60" class="p-2 rounded-circle bg-danger bg-opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red"><path d="M12.8659 3.00017L22.3922 19.5002C22.6684 19.9785 22.5045 20.5901 22.0262 20.8662C21.8742 20.954 21.7017 21.0002 21.5262 21.0002H2.47363C1.92135 21.0002 1.47363 20.5525 1.47363 20.0002C1.47363 19.8246 1.51984 19.6522 1.60761 19.5002L11.1339 3.00017C11.41 2.52187 12.0216 2.358 12.4999 2.63414C12.6519 2.72191 12.7782 2.84815 12.8659 3.00017ZM4.20568 19.0002H19.7941L11.9999 5.50017L4.20568 19.0002ZM10.9999 16.0002H12.9999V18.0002H10.9999V16.0002ZM10.9999 9.00017H12.9999V14.0002H10.9999V9.00017Z"></path></svg>
+                                </div>
+                                <div>
+                                    <p class="m-0 fs-4">Wellness Alerts</p>
+                                    <h1 class="m-0 text-danger">247</h1>
+                                    <p class="text-success m-0">Requires attention</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="card border-0">
+                            <div class="card-body p-3">
+                                <div class="">
+                                    <h2>Recent Activities</h2>
+                                </div>
+                                <div class="my-3">
+                                <div class="d-flex align-items-center gap-4 p-2 px-4 rounded-3" style="background: #98c2ffa3;">
+                                    <div>
+                                        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <p class="m-0 fs-4 fw-semibold">New Athlete Registration</p>
+                                        <p class="text-muted m-0">Maria Santos joined Basketball team</p>
+                                        <p class="text-muted m-0">2hrs ago</p>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="d-flex align-items-center gap-4 p-2 px-4 rounded-3" style="background: #98c2ffa3;">
+                                    <div>
+                                        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path></svg>
+                                    </div>
+                                    <div>
+                                        <p class="m-0 fs-4 fw-semibold">New Athlete Registration</p>
+                                        <p class="text-muted m-0">Maria Santos joined Basketball team</p>
+                                        <p class="text-muted m-0">2hrs ago</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="card border-0">
+                            <div class="card-body p-3">
+                                <div class="">
+                                    <h2>Wellness Alerts</h2>
+                                </div>
+                                <div class="my-3">
+                                    <div class="d-flex align-items-center gap-4 p-2 px-4 rounded-3" style="background: #98c2ffa3;">
+                                        <div>
+                                            <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="m-0 fs-4 fw-semibold">New Athlete Registration</p>
+                                            <p class="text-muted m-0">Maria Santos joined Basketball team</p>
+                                            <p class="text-muted m-0">2hrs ago</p>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="d-flex align-items-center gap-4 p-2 px-4 rounded-3" style="background: #98c2ffa3;">
+                                        <div>
+                                            <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path></svg>
+                                        </div>
+                                        <div>
+                                            <p class="m-0 fs-4 fw-semibold">New Athlete Registration</p>
+                                            <p class="text-muted m-0">Maria Santos joined Basketball team</p>
+                                            <p class="text-muted m-0">2hrs ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

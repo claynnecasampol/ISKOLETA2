@@ -1,0 +1,173 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.main-wrapper {
+    background: linear-gradient(to bottom, black, #E10101, black);
+}
+
+.sidebar {
+    width: 100px;
+    height: 100%;
+    background: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.main-content {
+    width: calc(100% - 100px);
+    position: relative;
+    left: 100px;
+}
+
+.rightsidebar {
+    width: 400px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+
+
+.main-content-student {
+    width: calc(100% - 500px);
+    position: relative;
+    left: 100px;
+}
+
+input,select {
+    height: 48px;
+    border-radius: 14px !important;
+}
+
+/* Remove underline and link styles in day names (Sun, Mon, Tue) */
+.fc .fc-col-header-cell-cushion {
+    text-decoration: none !important;
+    color: darkred !important;
+    cursor: default;
+}
+
+/* Remove underline and link styles in day numbers (1, 2, 3...) */
+.fc .fc-daygrid-day-number {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+    /* Optional: hover effect remove */
+    .fc .fc-daygrid-day-number:hover {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+/* Optional: make header text bold and centered */
+.fc .fc-col-header-cell {
+    font-weight: bold;
+    text-align: center;
+}
+.fc table,
+.fc td,
+.fc th,
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-section,
+.fc .fc-daygrid-day,
+.fc .fc-col-header-cell,
+.fc .fc-daygrid-day-frame {
+    border-color: darkred !important;
+}
+
+/* Remove background and border of event box */
+.fc-event,
+.fc-event-dot {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+/* Ensure event title text color is visible */
+.fc-event-title,
+.fc-event-time {
+    color: darkred !important;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Event title auto-wrap */
+.fc-event-title {
+    white-space: normal !important; /* allow line breaks */
+    word-break: break-word !important; /* break long words if needed */
+    overflow: hidden;
+    text-overflow: clip;
+    display: block;
+    padding: 2px 4px;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    box-sizing: border-box;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* show max 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+/* Palakihin date numbers */
+/* Siguraduhin na ito ay naka-load pagkatapos ng FullCalendar CSS file */
+.fc .fc-daygrid-day-number {
+    font-size: 20px !important; /* lakihan depende sa gusto mo */
+    font-weight: bold !important;
+    color: darkred !important;
+}
+
+
+
+
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid black;
+}
+
+    .tab.active {
+        color: darkred;
+        border-bottom: 2px solid darkred;
+    }
+
+.tab-content {
+    display: none;
+}
+
+    .tab-content.active {
+        display: block;
+    }
+
+.form-step {
+    display: none;
+}
+
+    .form-step.active {
+        display: block;
+    }

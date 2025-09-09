@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Student Calendar";
+}
+@model FITNSS.Models.StudentProfileModel
+
+
+<div class="d-flex">
+
+    @Html.Partial("Sidebar")
+    <div class="main-content-student">
+        <div class="container-fluid p-5">
+            <div class="mb-3">
+                <h2 class="m-0">Sports Calendar</h2>
+            </div>
+            <div class="card border-0 bg-transparent" style="border-radius: 20px;">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center p-2" style="border-radius: 20px;background:#edde09;">
+                                <div>
+                                    <p class="m-0 fs-5 fw-bold text-dark">
+                                        <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z"></path></svg>
+                                        Active Rest
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-2 bg-danger" style="border-radius: 20px;">
+                                <div>
+                                    <p class="m-0 fs-5 fw-bold text-dark">
+                                        <svg ="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z"></path></svg>
+                                        Passive Rest
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-lg-4">
+                        <div class="card border-0">
+                            <div class="card-body d-flex align-items-center gap-4 p-2 bg-warning" style="border-radius: 20px;">
+                                <div>
+                                    <p class="m-0 fs-5 fw-bold text-dark">
+                                        <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"></path></svg>
+                                        Training Rest
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                    </div>
+                </div>
+                <br />
+                <div id="calendar"></div>
+
+            </div>
+        </div>
+    </div>
+    @Html.Partial("RightSidebar")
+</div>
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+
+<!-- FullCalendar JS (Global Build) -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/Student/CalendarData', // JSON from DB
+            eventColor: '#3788d8', // not needed if we override background
+            eventDidMount: function(info) {
+                // Get the cell that contains this event
+                var cell = info.el.closest('.fc-daygrid-day');
+                if (cell) {
+                    cell.style.backgroundColor = 'orange';
+                }
+            }
+        });
+
+        calendar.render();
+    });
+</script>
+
