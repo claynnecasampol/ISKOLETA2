@@ -9,121 +9,121 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FITNSS
 build_property.RootNamespace = FITNSS
-build_property.ProjectDir = C:\fitnss-main\
+build_property.ProjectDir = C:\fitnss\ISKOLETA2\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\fitnss-main
+build_property.MSBuildProjectDirectory = C:\fitnss\ISKOLETA2
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/fitnss-main/Views/Coach/AthleteApplication.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/AthleteApplication.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcQXRobGV0ZUFwcGxpY2F0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Coach/AthleteInformation.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/AthleteInformation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcQXRobGV0ZUluZm9ybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Coach/Dashboard.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Coach/Profile.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Coach/TrainingSchedule.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/TrainingSchedule.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcVHJhaW5pbmdTY2hlZHVsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Coach/ViewProfileAthlete.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Coach/ViewProfileAthlete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29hY2hcVmlld1Byb2ZpbGVBdGhsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Home/Index.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Home/Privacy.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Login/Login.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Login/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Register/Register.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Register/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaXN0ZXJcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Sdpo/Athlete.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Sdpo/Athlete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2Rwb1xBdGhsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Sdpo/Dashboard.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Sdpo/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2Rwb1xEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/CoachRightSidebar.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/CoachRightSidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvYWNoUmlnaHRTaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/Error.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/Navbar.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/Navbar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5hdmJhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/RightSidebar.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/RightSidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFJpZ2h0U2lkZWJhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/Sidebar.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFNpZGViYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/AcademicMonitoring.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/AcademicMonitoring.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxBY2FkZW1pY01vbml0b3JpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/AthleteProfile.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/AthleteProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxBdGhsZXRlUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/Bmi.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/Bmi.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxCbWkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/Calendar.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/Calendar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDYWxlbmRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/Dashboard.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Student/Profile.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Student/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/_ViewImports.cshtml]
+[C:/fitnss/ISKOLETA2/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/_ViewStart.cshtml]
+[C:/fitnss/ISKOLETA2/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/fitnss-main/Views/Shared/_Layout.cshtml]
+[C:/fitnss/ISKOLETA2/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-kxl7bfwvz9

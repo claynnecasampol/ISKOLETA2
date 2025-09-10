@@ -1,4 +1,3 @@
-wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\files\1_Group-9-Chapter-1-3.pdf
 wwwroot\files\7_TappyCapstone-FINAL.pdf
@@ -12,15 +11,37 @@ wwwroot\images\7_car.png
 wwwroot\images\7_pineapple-upside-down-cake-1658850950.webp
 wwwroot\images\7_rock.png
 wwwroot\images\7_sg-11134202-7rd4p-m7ukngkhrqyl10.jpg
+wwwroot\images\Athletes.png
+wwwroot\images\badminton.jpg
 wwwroot\images\coin.png
 wwwroot\images\Features (1).pdf
-wwwroot\images\Group 1000002760.png
 wwwroot\images\image 102.png
 wwwroot\images\istockphoto-1372002650-612x612.jpg
+wwwroot\images\Logo.png
 wwwroot\images\palada-moringa.jpg
 wwwroot\images\profile.png
 wwwroot\images\rock.png
 wwwroot\images\sg-11134202-7rd4p-m7ukngkhrqyl10.jpg
+wwwroot\images\sports\arnis.webp
+wwwroot\images\sports\athletics.webp
+wwwroot\images\sports\badminton.jpg
+wwwroot\images\sports\Baseball.webp
+wwwroot\images\sports\Basketball.jpg
+wwwroot\images\sports\Beach VV.jpg
+wwwroot\images\sports\chess.webp
+wwwroot\images\sports\Dance sport.jpg
+wwwroot\images\sports\Esport.jpg
+wwwroot\images\sports\football.jpg
+wwwroot\images\sports\Futsal.webp
+wwwroot\images\sports\Karate-do.avif
+wwwroot\images\sports\Sepaktakraw.jpg
+wwwroot\images\sports\softball.jpg
+wwwroot\images\sports\Sports1.jpg
+wwwroot\images\sports\Sports2.jpg
+wwwroot\images\sports\swimming.jpg
+wwwroot\images\sports\table tennis.webp
+wwwroot\images\sports\taekwando.jpg
+wwwroot\images\sports\volleyball.jpg
 wwwroot\images\TappyCapstone-FINAL.pdf
 wwwroot\images\top-view-desert-landscape-d-rendering-d-rendering-desert-landscape-mountain-range-desert-plants-148856173.jpg
 wwwroot\js\site.js
@@ -81,3 +102,4 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\css\site.css
