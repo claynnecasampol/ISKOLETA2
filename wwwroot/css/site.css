@@ -180,6 +180,14 @@ input,select {
 
 /*New*/
 
+/*website home sports view*/
+@media (min-width: 992px) {
+    .col-lg-custom {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
 /* navigation style */
 
 .nav-brand {
@@ -188,6 +196,7 @@ input,select {
     gap: 10px; /* space between logo and title */
 }
 
+/*logo*/
 .nav-logo {
     height: 100px; /* or adjust as needed */
     width: auto;

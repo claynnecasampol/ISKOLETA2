@@ -110,7 +110,7 @@
             <div class="row g-4">
                 @foreach (var sport in displayedSports)
                 {
-                    <div style="flex: 0 0 20%; max-width: 20%;">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-custom">
                         <div style="background-color: #212529; border: none; height: 100%; border-radius: 15px; overflow: hidden;">
                             <img src="@Url.Content("~/images/sports/" + sport.Image)"
                                  alt="@sport.Name"
