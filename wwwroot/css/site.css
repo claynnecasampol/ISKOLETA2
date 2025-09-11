@@ -1,3 +1,6 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet');
+/*added a google font for Kanit and Montserrat 
+*/
 html {
   font-size: 14px;
 }
@@ -19,6 +22,8 @@ html {
 
 .main-wrapper {
     background: linear-gradient(to bottom, black, #E10101, black);
+    min-height: 100vh; 
+/*    added the min-height*/
 }
 
 .sidebar {
@@ -171,3 +176,366 @@ input,select {
     .form-step.active {
         display: block;
     }
+
+
+
+/*New*/
+
+/*website home sports view*/
+@media (min-width: 992px) {
+    .col-lg-custom {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+/* navigation style */
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between logo and title */
+}
+
+/*logo*/
+.nav-logo {
+    height: 100px; /* or adjust as needed */
+    width: auto;
+}
+
+/* navigation title */
+.nav-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Kanit', sans-serif;
+    text-decoration: none;
+}
+
+/* pages connections */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+    .nav-links li a {
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+        padding: 10px 15px;
+        font-family: 'Roboto', sans-serif;
+        position: relative;
+    }
+
+        /* active navigation link */
+        .nav-links li a:active,
+        .nav-links li a.active {
+            border-bottom: 3px solid white;
+        }
+
+/* login button */
+.login-btn {
+    background-color: #5F0902;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* login dropdown */
+.login-dropdown {
+    position: relative;
+}
+
+    .login-dropdown > .login-btn::after {
+        content: " ▼";
+        font-size: 10px;
+    }
+
+.login-submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    z-index: 1001;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+    .login-submenu li a {
+        display: block;
+        padding: 8px 16px;
+        font-size: 16px;
+        color: white;
+        text-decoration: none;
+        font-family: 'Roboto', sans-serif;
+        white-space: nowrap;
+    }
+
+        .login-submenu li a:hover {
+            background-color: #5F0902;
+            border-radius: 4px;
+        }
+
+.login-dropdown:hover .login-submenu {
+    display: block;
+}
+
+.home-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 25px 60px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    text-align: left;
+    padding-left: 0;
+    margin-top: 3%;
+    margin-left: -25px;
+    flex: 1 1 50%;
+    padding-right: 30px;
+}
+
+.intro {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.title {
+    font-size: 7vw;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+}
+
+.description {
+    font-size: 1.8vw;
+    font-family: 'Kanit', sans-serif;
+    color: #fff;
+    text-align: left;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.SignInUp {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+    align-items: left;
+    margin-left: 50px;
+    font-family: 'Kanit', sans-serif;
+    color: #fff;
+}
+
+.button-link {
+    padding: 12px 4vw;
+    font-size: 1.8vw;
+    border: none;
+    background: linear-gradient(135deg, #820707, #383535); /* red to gray */
+    color: white;
+    border: 3px solid #fff;
+    cursor: pointer;
+    border-radius: 50px;
+    min-width: 100px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    transition: background 0.3s ease;
+    text-decoration: none;
+    margin-left: -25px;
+}
+
+    .button-link:hover {
+        background: linear-gradient(135deg, #9e2828, #534a4a);
+    }
+
+.AthletesImageContainer {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.AthletesImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.about-container h2 {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    color: #FFD700;
+    font-size: 5vw;
+}
+
+.about-container p {
+    font-family: 'Kanit', sans-serif;
+    text-align: center;
+    color: #9b9b9b;
+    font-size: 2vw;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.mission-vision-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 0 auto;
+    flex-wrap: wrap; /* stack on small screens */
+}
+
+.mission, .vision {
+    flex: 1 1 45%;
+    color: #fff;
+    font-family: 'Kanit', sans-serif;
+}
+
+.mission {
+    text-align: left;
+}
+
+.vision {
+    text-align: right;
+}
+
+.mission h2 {
+    text-align: left;
+    padding-left: 150px;
+}
+
+.vision h2 {
+    text-align: right;
+    padding-right: 150px;
+}
+
+.mission h2, .vision h2 {
+    font-size: 50px;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    margin-bottom: 16px;
+    margin-top: 100px;
+}
+
+.mission p,
+.vision p {
+    font-family: 'Kanit', sans-serif;
+    font-size: 2vw;
+    color: #9b9b9b;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.Qoute {
+    font-size: 1.5vw;
+    text-align: left;
+    margin-top: 20px;
+    color: #aaaaaa;
+    margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.info,
+.AthletesImageContainer {
+    width: 50%;
+}
+
+.info {
+    padding-left: 40px;
+    margin-top: 0;
+}
+
+.contact-container h2 {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    color: #fff;
+    font-size: 2vw;
+    margin-top: 100px;
+}
+
+.contact-container p {
+    font-family: 'Kanit', sans-serif;
+    text-align: center;
+    color: #9b9b9b;
+    font-size: 1vw;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+
+@media (max-width: 600px) {
+    body {
+        height: 150vh;
+    }
+    /* navigation bar */
+    .navbar {
+        padding: 10px 7px;
+    }
+
+    .nav-logo {
+        height: 20px;
+    }
+
+    .nav-title {
+        font-size: 4vw;
+    }
+
+    .nav-links {
+        gap: 3px;
+    }
+
+        .nav-links li a {
+            font-size: 3.2vw;
+            padding: 3px 3px;
+        }
+
+            /* active navigation link */
+            .nav-links li a:active,
+            .nav-links li a.active {
+                border-bottom: 3px solid white;
+            }
+
+    .full-screen-wrapper {
+        min-height: 100vh; /* Make it fill the viewport */
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+    }
+
+    .form-container {
+        width: 100%;
+        max-height: none;
+        justify-content: center;
+        margin-top: 100px;
+        margin-inline: auto;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .AthletesImageContainer {
+        width: 80%;
+        margin-top: 10px;
+        align-items: center;
+    }
+}

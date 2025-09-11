@@ -37,18 +37,36 @@
                                 <input type="email" name="email" id="Email" placeholder="Email" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
                                 <span class="fa fa-at form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
                             </div>
+                            @* added this condition script *@
+                            <small id="emailFeedback" class="text-danger mt-2 d-block" style="font-family: 'Kanit', sans-serif;"></small>
                         </div>
 
-                        <div class="col-12 col-lg-12">
+                        @*Original code
+                            <div class="col-12 col-lg-12">
                             <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
                                 <input type="password" name="password" id="Password" placeholder="******" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
                                 <i class="fa fa-lock toggle-password" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></i>
                             </div>
+                        </div> *@
+
+                        @* new code for password *@
+                        <div class="col-12 col-lg-12 mb-3">
+                            <div class="form-group has-feedback" style="position: relative;">
+                                <input type="password" name="password" id="Password" placeholder="******"
+                                       style="width: 100%; height: 45px; border: unset; box-shadow: none; outline-style: none;"
+                                       required>
+                                <i class="fa fa-lock toggle-password"
+                                   style="top: 50%; transform: translateY(-50%); position: absolute; right: 10px;"></i>
+                            </div>
+                            <small id="passwordFeedback" class="text-danger mt-2 d-block" style="font-family: 'Kanit', sans-serif;"></small>
                         </div>
+                        
+
                         <div class="col-12 col-lg-12">
                             <div>
-                                <button type="submit" class="btn w-100 btn-block btn-flat" style="color: #fff; border: unset;height: 45px;font-size: 23px;background:#E10101;" name="register">Register</button>
+                                <button type="submit" class="btn w-100 btn-block btn-flat" id="registerBtn" style="color: #fff; border: unset;height: 45px;font-size: 23px;background:#E10101; font-family: 'Roboto', sans-serif;" name="register">Register</button>
                             </div>
+                            @* added an id="registerBtn" for the script of password. *@
                             <div class="mt-3 text-center">
                                 <span class="text-white">You have already an account? <a href="../login/login" class="text-decoration-none text-white">Login</a></span>
                             </div>
@@ -56,15 +74,57 @@
                        
          </div>
         </form>
+                @* added a safety password and email verification script. This script prohibits the user to register if the password and email requirement are not satisfied.*@
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const passwordInput = document.getElementById("Password");
+                        const emailInput = document.getElementById("Email");
+                        const passwordFeedback = document.getElementById("passwordFeedback");
+                        const emailFeedback = document.getElementById("emailFeedback");
+                        const registerBtn = document.getElementById("registerBtn");
+
+                        function validateForm() {
+                            const password = passwordInput.value;
+                            const email = emailInput.value;
+
+                            const hasUppercase = /[A-Z]/.test(password);
+                            const hasNumber = /[0-9]/.test(password);
+                            const hasSymbol = /[^A-Za-z0-9]/.test(password);
+                            const isLongEnough = password.length >= 8;
+                            const isPasswordValid = hasUppercase && hasNumber && hasSymbol && isLongEnough;
+
+                            const isEmailValid = email.endsWith("iskolarngbayan.pup.edu.ph");
+
+                            // Update feedback messages
+                            passwordFeedback.textContent = isPasswordValid ? "" : "Password must be at least 8 characters and include a capital letter, number, and symbol.";
+                            emailFeedback.textContent = isEmailValid ? "" : "Email must end with iskolarngbayan.pup.edu.ph";
+
+                            // Enable or disable register button
+                            if (isPasswordValid && isEmailValid) {
+                                registerBtn.disabled = false;
+                                registerBtn.style.opacity = "1";
+                                registerBtn.style.cursor = "pointer";
+                            } else {
+                                registerBtn.disabled = true;
+                                registerBtn.style.opacity = "0.6";
+                                registerBtn.style.cursor = "not-allowed";
+                            }
+                        }
+
+                        passwordInput.addEventListener("input", validateForm);
+                        emailInput.addEventListener("input", validateForm);
+                    });
+                </script>
+
         <br>
         @if (ViewData["Message"] != null)
         {
-            <p class="text-center" style="background:#6bc1693d;color:green;padding: 6px;">@ViewData["Message"]</p>
+                    <p class="text-center" style="background:#6bc1693d;color:green;padding: 6px; font-family: 'Kanit' , sans-serif;">@ViewData["Message"]</p>
         }      <br>
     </div>
         </div>
 
     </div>
 
-                </div>
-                </div>
+    </div>
+ </div>

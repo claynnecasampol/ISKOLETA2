@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light py-3" style="background: black;">
+﻿@* Orig code of the navbar
+
+    <nav class="navbar navbar-expand-lg navbar-light py-3" style="background: black;">
     <div class="container-fluid">
         <a class="navbar-brand fw-bold text-white" href="../">ISKOLETA+</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +22,51 @@
                 </li>
             </ul>
 
+        </div>
+    </div>
+</nav> *@
+
+<nav class="navbar navbar-expand-md navbar-dark py-3"
+     style="display: flex;
+            position: fixed;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+            width: 100%;">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" href="@Url.Action("Index", "Home")">
+            <img src="~/images/Logo.png" alt="ISKOLETA+ Logo" class="logo" style="height: 40px;" />
+            <span>ISKOLETA+</span>
+        </a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="@Url.Action("Index", "Home")#home">Home</a>
+                </li>
+                <li class="nav-item px-4">
+                    <a class="nav-link text-white" href="@Url.Action("Index", "Home")#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="@Url.Action("Index", "Home")#contact">Contact</a>
+                </li>
+                <li class="nav-item px-4">
+                    <a class="nav-link text-white button btn-danger btn-sm px-3"
+                       href="@Url.Action("Login", "Login")"
+                       style="background:#E10101;border-radius: 10px;">
+                        Login
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

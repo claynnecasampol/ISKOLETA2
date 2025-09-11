@@ -4,8 +4,8 @@
 
 <div class="main-wrapper">
     @Html.Partial("Navbar")
-    <div class="row w-100 d-flex" style="height: calc(100vh - 72px);">
-        <div class="col-11 col-md-8 col-lg-6 col-xl-4 m-auto" style="background: black;border-radius: 20px;">
+    <div class="d-flex justify-content-center" style="min-height: calc(100vh - 72px); padding-top: 120px;">
+        <div class="col-11 col-md-8 col-lg-6 col-xl-4" style="background: black; border-radius: 20px;">
             <div class="login-box-body" style="padding: 50px 30px;">
                 <div style="width: 100%;text-align: center;">
                     <img src="~/images/image 102.png" alt="User Image" width="60px">
@@ -30,8 +30,9 @@
                     <br>
                     <div class="row">
                         <div class="col-xs-12">
-                            <button type="submit" class="btn w-100 btn-block btn-flat submit" style="color: #fff; border: unset;height: 45px;font-size: 23px;background:#E10101;" name="signin">Login</button>
+                            <button type="submit" class="btn w-100 btn-block btn-flat submit" style="color: #fff; border: unset;height: 45px;font-size: 23px;font-weight: 600;background:#E10101;" name="signin">login</button>
                         </div>
+                        @* made the "Login" all in small letter and made it bold. font-weight: 600; *@
                     </div>
                     <div class="mt-3 text-center">
                         <span class="text-white">No account yet? <a href="../register/register" class="text-decoration-none text-white">Register</a></span>

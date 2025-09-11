@@ -1,8 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "ISKOLETA+"; //renamed the homepage from Home page into ISKOLETA+
 }
 
-<div class="main-wrapper">
+
+@*<div class="main-wrapper"> (here's the orig code nung home)
     @Html.Partial("Navbar")
     <div class="row m-0">
         <div class="col-lg-6 position-relative">
@@ -25,4 +26,156 @@
 
         </div>
     </div>
-</div>
+</div>*@
+
+<div class="main-wrapper">
+    @Html.Partial("Navbar")
+
+    <section class="gradient1 text-white">
+        <!-- HOME Section -->
+        <div id="home" class="p-5">
+            <div class="row m-0">
+                <div class="col-lg-6 d-flex flex-column justify-content-center text-white">
+                    <div>
+                        <h1 style="font-size: clamp(48px, 10vw, 152px); text-shadow: 12px 2px 6px black;">
+                            ISKOLETA+<br />SPORT
+                        </h1>
+
+                        <p class="text-light">
+                            Welcome to PUP Sports – your ultimate platform for seamless sports management!
+                            Stay ahead with real-time updates, easy registrations, and a hassle-free experience.
+                            Let’s make every game unforgettable!
+                        </p>
+
+                        <!-- Register Button -->
+                        <a href="@Url.Action("Register", "Register")"
+                           class="btn btn-lg border border-2 border-light text-white my-3"
+                           style="border-radius: 25px; background: linear-gradient(to right, #E10101, black);">
+                            <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM13.6695 15.9999H10.3295L8.95053 17.8969L9.5044 19.6031C10.2897 19.8607 11.1286 20 12 20C12.8714 20 13.7103 19.8607 14.4956 19.6031L15.0485 17.8969L13.6695 15.9999ZM5.29354 10.8719L4.00222 11.8095L4 12C4 13.7297 4.54894 15.3312 5.4821 16.6397L7.39254 16.6399L8.71453 14.8199L7.68654 11.6499L5.29354 10.8719ZM18.7055 10.8719L16.3125 11.6499L15.2845 14.8199L16.6065 16.6399L18.5179 16.6397C19.4511 15.3312 20 13.7297 20 12L19.997 11.809L18.7055 10.8719ZM14.2914 4.33299L12.9995 5.27293V7.78993L15.6935 9.74693L17.9325 9.01993L18.4867 7.3168C17.467 5.90685 15.9988 4.84254 14.2914 4.33299ZM9.70857 4.33299C8.00078 4.84265 6.53236 5.90735 5.51261 7.31778L6.06653 9.01993L8.30554 9.74693L10.9995 7.78993V5.27293L9.70857 4.33299Z" />
+                            </svg>
+                            Register
+                        </a>
+
+                        <!-- Tagline -->
+                        <div class="fs-4 fw-bold text-white mt-3">Winners never quit, quitters never win!</div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <img src="~/images/Athletes.png" alt="PUP Athletes" width="100%" />
+                </div>
+            </div>
+        </div>
+            <div class="container text-center">
+                <!-- PUP Emblem -->
+                <img src="~/images/image 102.png" alt="PUP Emblem" style="width: 100px;" class="mb-3" />
+
+                <!-- Heading -->
+                <h2 class="fw-bold display-5">SPORTS IN PUP</h2>
+                <p class="text-light mb-5">
+                    We support over 22 different sports! This page lists a few of the most popular sports on the platform.
+                </p>
+
+                <!-- Sports Grid -->
+            @{
+                var showAll = Context.Request.Query["showAll"] == "true";
+
+                var sports = new[] {
+                        new { Name = "Arnis", Image = "arnis.webp" },
+                        new { Name = "Athletics", Image = "athletics.webp" },
+                        new { Name = "Badminton", Image = "badminton.jpg" },
+                        new { Name = "Baseball/Softball", Image = "baseball.webp" },
+                        new { Name = "Basketball", Image = "basketball.jpg" },
+                        new { Name = "Beach Volleyball", Image = "Beach VV.jpg" },
+                        new { Name = "Chess", Image = "chess.webp" },
+                        new { Name = "Dance Sport", Image = "Dance sport.jpg" },
+                        new { Name = "E-Sport", Image = "esport.jpg" },
+                        new { Name = "Football", Image = "football.jpg" },
+                        new { Name = "Futsal", Image = "futsal.webp" },
+                        new { Name = "Karate-Do", Image = "Karate-do.avif" },
+                        new { Name = "Sepak-Takraw", Image = "Sepaktakraw.jpg" },
+                        new { Name = "Softball", Image = "softball.jpg" },
+                        new { Name = "Swimming", Image = "swimming.jpg" },
+                        new { Name = "Table Tennis", Image = "table tennis.webp" },
+                        new { Name = "Taekwondo", Image = "taekwando.jpg" },
+                        new { Name = "Volleyball", Image = "volleyball.jpg" }
+                        };
+
+                var displayedSports = showAll ? sports : sports.Take(5);
+            }
+
+            <!-- Sports Grid -->
+            <div class="row g-4">
+                @foreach (var sport in displayedSports)
+                {
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-custom">
+                        <div style="background-color: #212529; border: none; height: 100%; border-radius: 15px; overflow: hidden;">
+                            <img src="@Url.Content("~/images/sports/" + sport.Image)"
+                                 alt="@sport.Name"
+                                 style="height: 250px; object-fit: cover; width: 100%; display: block;" />
+                            <div style="background-color: #dc3545; color: white; text-align: center; padding: 0.75rem;">
+                                <h5 style="margin-bottom: 0; text-transform: uppercase;">@sport.Name</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Toggle Button -->
+            <div class="text-end mt-4">
+                @if (!showAll)
+                {
+                    <a href="?showAll=true" class="btn btn-outline-light">See All</a>
+                }
+                else
+                {
+                    <a href="?showAll=false" class="btn btn-outline-light">Show Less</a>
+                }
+            </div>
+
+            <!-- ABOUT Section -->
+            <div id="about" class="p-5" style="color: #fff; font-family: 'Segoe UI', sans-serif;">
+                <div class="about-container text-center mb-5">
+                    <h2 class="fw-bold" style="font-size: 2.8rem; color: #FFD700; letter-spacing: 1px;">ABOUT ISKOLETA+</h2>
+                    <p style="max-width: 800px; margin: 1rem auto; font-size: 1.2rem; line-height: 1.8;">
+                        ISKOLETA+ is your all-access pass to the sports life at Polytechnic University of the Philippines. Whether you're a seasoned athlete or just starting out, our platform connects you to dynamic teams, and a community that moves together.
+                    </p>
+                </div>
+
+                <div class="mv-wrapper row text-center">
+                    <div class="col-md-6 mb-4">
+                        <div style="background-color: #fff; color: #8B0000; padding: 2rem; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                            <h3 class="fw-bold mb-3">OUR MISSION</h3>
+                            <p style="font-size: 1rem; line-height: 1.6;">
+                                To promote sports and physical activities among students, fostering a healthy, active, and empowered lifestyle through inclusive participation.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div style="background-color: #fff; color: #8B0000; padding: 2rem; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                            <h3 class="fw-bold mb-3">OUR VISION</h3>
+                            <p style="font-size: 1rem; line-height: 1.6;">
+                                To be the leading platform for sports engagement at PUP—where every student finds their team, builds their strength, and thrives in motion.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- CONTACT Section -->
+        <div id="contact" class="p-5 d-flex flex-column align-items-center text-center">
+            <!-- PUP Emblem -->
+            <img src="~/images/image 102.png" alt="PUP Emblem" style="width: 100px;" class="mb-3" />
+
+            <h2 class="fw-bold">Contact Us</h2>
+            <p>If you have any questions or need assistance, feel free to reach out to us!</p>
+            <p>Address: Polytechnic University of the Philippines, Sta. Mesa, Manila</p>
+            <p>Phone: +63 912 345 6789</p>
+                <!-- Contact Links -->
+                <p>
+                    <a href="mailto:sportsdev@pup.edu.ph" class="text-decoration-none text-light fw-semibold">Email Us</a> |
+                    <a href="https://web.facebook.com/pupsdpo" target="_blank" class="text-decoration-none text-light fw-semibold">Visit our Facebook</a>
+                </p>
+</section>
