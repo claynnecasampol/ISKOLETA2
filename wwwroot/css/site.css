@@ -153,7 +153,9 @@ input,select {
 .tab {
     padding: 10px 20px;
     cursor: pointer;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid gray;
+/*    NEW!!*/
+    color: gray;
 }
 
     .tab.active {

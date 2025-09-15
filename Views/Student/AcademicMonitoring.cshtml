@@ -315,17 +315,24 @@
 
                         @if (ViewBag.HasSubmitted)
                         {
+                            @* Make the check 60x60, turn the Main title from h1 to h2, change the size of description from fs-4 to fs-5 *@
                             <div class="text-center">
-                                <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
-                                <h1 class="text-muted text-center">Semestral Academic Certificate of Registration <br /> Submitted!</h1>
-                                <p class="fs-4 text-muted">Wait for a confirmation notification if your certificate of registration was verified.</p>
+                                <svg width="60" height="60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"></path></svg>
+                                <h2 class="text-muted text-center">Semestral Academic Certificate of Registration <br /> Submitted!</h2>
+                                <p class="fs-5 text-muted">Wait for a confirmation notification if your certificate of registration was verified.</p>
                             </div>
                         }
                         else
                         {
-                            <h2 class="mx-3 text-center">Certificate of Registration</h2>
+                            //NEW!! Added margin top 3 here 
+                            <h2 class="mx-3 text-center mt-3">Certificate of Registration</h2>
+                            //NEW!! Added a description here for the users
+                            <p class="fs-5 text-muted m-0 mx-3 text-center">
+                               Please upload your Certificate of Registration to proceed with verification.
+                            </p>
                             <div class="card-body">
-                                <div class="card border-2 text-center w-50 m-auto">
+                                @* Make the box uploading box longger (from w-50 to w-75) *@
+                                <div class="card border-2 text-center w-75 m-auto">
                                     <div class="py-2 w-100 bg-light position-relative">
                                         <label class="fs-4">Upload Certificate of Registration</label>
                                         <input type="file" name="File" class="form-control position-absolute opacity-0" style="top: 0;" />
