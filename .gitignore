@@ -3,3 +3,5 @@
 "bin/" 
 obj/ 
 bin/ 
+wwwroot/files/*.docx 
+wwwroot/files/*.pdf 
