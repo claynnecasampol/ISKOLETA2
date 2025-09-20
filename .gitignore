@@ -6,3 +6,5 @@ bin/
 wwwroot/files/*.docx 
 wwwroot/files/*.pdf 
 obj/ 
+bin/ 
+obj/ 

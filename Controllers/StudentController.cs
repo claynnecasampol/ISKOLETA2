@@ -30,7 +30,7 @@ namespace FITNSS.Controllers
 
             // Sample data – ideally galing sa database
             var days = new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-            
+
 
             string userId = HttpContext.Session.GetString("userId");
             if (string.IsNullOrEmpty(userId))
@@ -1504,7 +1504,7 @@ WHERE users_id = @UserId
                 }
 
             }
-            return View(model); 
+            return View(model);
         }
 
         [HttpGet]
@@ -1562,7 +1562,6 @@ WHERE users_id = @UserId
 
         public IActionResult AcademicMonitoring()
         {
-
             string userId = HttpContext.Session.GetString("userId");
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Login");
@@ -1655,6 +1654,7 @@ WHERE users_id = @UserId
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnectionString")))
             {
                 conn.Open();
+
                 string query = "SELECT id, users_id, subject, grade FROM student_grade WHERE users_id=@UserId";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -1664,14 +1664,33 @@ WHERE users_id = @UserId
                     {
                         while (reader.Read())
                         {
-                            double grade = Convert.ToDouble(reader["grade"]);
-                            total += grade;
-                            count++;
+                            //Orig Code
+                            //                double grade = Convert.ToDouble(reader["grade"]);
+                            //                total += grade;
+                            //                count++;
+                            //                grades.Add(new StudentAcademicMonitoringModel
+                            //                {
+                            //                    Subject = reader["subject"].ToString(),
+                            //                    Grade = grade.ToString()
+                            //                });
+
+                            //NEW CODE!!
+                            string rawGrade = reader["grade"].ToString().Trim();
+                            string subject = reader["subject"].ToString();
+
+                            if (double.TryParse(rawGrade, out double parsedGrade))
+                            {
+                                total += parsedGrade;
+                                count++;
+                            }
+
+                            // Always add the grade to the list, whether numeric or not
                             grades.Add(new StudentAcademicMonitoringModel
                             {
-                                Subject = reader["subject"].ToString(),
-                                Grade = grade.ToString()
+                                Subject = subject,
+                                Grade = rawGrade
                             });
+                            //END OF NEW
                         }
                     }
                 }
@@ -1679,6 +1698,20 @@ WHERE users_id = @UserId
 
             ViewBag.Grades = grades;
             ViewBag.GWA = count > 0 ? (total / count) : 0; // compute GWA
+
+            //NEW!! If may 4, 5, Incomplete, Dropped, Withdrawn means at risk 
+            bool hasDisqualifyingGrade = grades.Any(g =>
+                    g.Grade == "4" ||
+                    g.Grade == "5" ||
+                    g.Grade.Equals("Incomplete", StringComparison.OrdinalIgnoreCase) ||
+                    g.Grade.Equals("Dropped", StringComparison.OrdinalIgnoreCase) ||
+                    g.Grade.Equals("Withdrawn", StringComparison.OrdinalIgnoreCase)
+                );
+
+            double gwa = count > 0 ? (total / count) : 0;
+            ViewBag.GWA = gwa;
+            ViewBag.IsQualified = (gwa <= 3) && !hasDisqualifyingGrade;
+            //END OF NEW
 
 
             // 🔹 Check kung may upload record na
@@ -1813,36 +1846,74 @@ WHERE users_id = @UserId
         }
 
         [HttpPost]
-        public IActionResult AcademicMonitoringGrade(int userId, List<string> Subject, List<string> Grade)
+        //Orig code
+        //public IActionResult AcademicMonitoringGrade(int userId, List<string> Subject, List<string> Grade)
+        
+        public IActionResult AcademicMonitoringGrade(int userId, List<string> Subject, List<string> Grade, IFormFile GradeFile)
         {
             string connStr = _configuration.GetConnectionString("DefaultConnectionString");
-            StudentProfileModel model = new StudentProfileModel();
+            //Orig Code
+            //StudentProfileModel model = new StudentProfileModel();
+
+            //To make the proof of file submission work
+            StudentAcademicMonitoringModel model = new StudentAcademicMonitoringModel();
             model.userId = userId.ToString();
+
+            // NEW!!! Submission of proof of grades
+            Console.WriteLine("GradeFile is null? " + (GradeFile == null));
+            Console.WriteLine("GradeFile length: " + (GradeFile?.Length ?? 0));
+            // --- Handle file upload ---
+            if (GradeFile != null && GradeFile.Length > 0)
+            {
+                var safeFileName = Path.GetFileNameWithoutExtension(GradeFile.FileName);
+                safeFileName = string.Join("_", safeFileName.Split(Path.GetInvalidFileNameChars()));
+                var extension = Path.GetExtension(GradeFile.FileName);
+                var fileName = $"{userId}_{safeFileName}{extension}";
+
+                var imagesFolder = Path.Combine(_env.WebRootPath, "files");
+                if (!Directory.Exists(imagesFolder))
+                    Directory.CreateDirectory(imagesFolder);
+
+                var filePath = Path.Combine(imagesFolder, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                    GradeFile.CopyTo(stream);
+
+                model.GradeFile = "/files/" + fileName;      
+            }
+
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
 
                 for (int i = 0; i < Subject.Count; i++)
                 {
-                    string sql = "INSERT INTO student_grade (users_id, subject, grade) VALUES (@userId, @subject, @grade)";
+                    //NEW!!
+                    Console.WriteLine($"Inserting: Subject={Subject[i]}, Grade={Grade[i]}, File={model.GradeFile}");
+                    //Orig Code
+                    //string sql = "INSERT INTO student_grade (users_id, subject, grade) VALUES (@userId, @subject, @grade)";
+
+                    //Added the file_path for file submission here 
+                    string sql = "INSERT INTO student_grade (users_id, subject, grade, file_path) VALUES (@userId, @subject, @grade, @filePath)"; 
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@userId", userId);
                         cmd.Parameters.AddWithValue("@subject", Subject[i]);
                         cmd.Parameters.AddWithValue("@grade", Grade[i]);
+                        //added this for file submission
+                        cmd.Parameters.AddWithValue("@filePath", model.GradeFile ?? "");
                         cmd.ExecuteNonQuery();
                     }
 
                     string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                    SELECT 
+                        ISNULL(SUM(km), 0) AS TotalKm,
+                        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                    FROM student_running
+                    WHERE users_id = @UserId
+                      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                ";
 
 
                     using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -1874,14 +1945,14 @@ WHERE users_id = @UserId
 
 
                     string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                    SELECT 
+                        ISNULL(SUM(hours), 0) AS TotalHours,
+                        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                    FROM student_sleeping
+                    WHERE users_id = @UserId
+                      AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                      AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                    ";
 
                     using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                     {
@@ -1910,14 +1981,14 @@ WHERE users_id = @UserId
 
 
                     string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                    SELECT 
+                        ISNULL(SUM(calories), 0) AS TotalCalories,
+                        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                    FROM student_calories
+                    WHERE users_id = @UserId
+                      AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                      AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                    ";
 
                     using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                     {
@@ -1944,13 +2015,14 @@ WHERE users_id = @UserId
                     }
                 }
             }
-
+            //NEW!! lagay sa view
+            TempData["FilePath"] = model.GradeFile;
             // after insert balik sa view
             return RedirectToAction("AcademicMonitoring");
         }
 
 
-
+//COR submission
         [HttpPost]
         public IActionResult AcademicMonitoringAcademicRegistration(StudentAcademicMonitoringModel model, IFormFile File)
         {
