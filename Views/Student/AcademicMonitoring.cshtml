@@ -76,6 +76,7 @@
                                 @* NEW CODE!! *@
                                 <div id="subjectsWrapper">
                                     <div class="row g-2 subject-row d-flex">
+                                        @* Number of rows to help the user identify if how many grades he already put in *@
                                         <div class="col-2">
                                             <div class="form-group">
                                                 <label>No.</label>
@@ -85,36 +86,26 @@
                                                 </div>
                                             </div>
                                         </div>                                    
-
+                                        @* Subject. Added [0] for the script validation that if empty, it will not be able to submit *@
                                         <div class="col-5">
                                             <div class="form-group">
                                                 <label>Subject</label>
                                                 <input type="text" name="Subject[0]" class="form-control" />
                                             </div>
-                                        </div>
-
-                                        <div class="col-5">
-                                            <div class="form-group">
-                                                <label>Grade</label>
-                                                <select name="Grade[0]" class="form-control grade-input">
-                                                    <option value="">Select Grade</option>
-                                                    <option value="1.0">1.0</option>
-                                                    <option value="1.25">1.25</option>
-                                                    <option value="1.5">1.5</option>
-                                                    <option value="1.75">1.75</option>
-                                                    <option value="2.0">2.0</option>
-                                                    <option value="2.25">2.25</option>
-                                                    <option value="2.5">2.5</option>
-                                                    <option value="2.75">2.75</option>
-                                                    <option value="3.0">3.0</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="Incomplete">Incomplete</option>
-                                                    <option value="Dropped">Dropped</option>
-                                                    <option value="Withdrawn">Withdrawn</option>
-                                                </select>
+                                        </div>       
+                                        @* Grades. Turn the grade into a dropdown for easy selection. Selection are in the array of StudentController *@
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <label>Grade</label>
+                                                    <select name="Grade[0]" class="form-control grade-input">
+                                                        <option value="">Select Grade</option>
+                                                        @foreach (var g in ViewBag.grade as IEnumerable<string>)
+                                                        {
+                                                            <option value="@g">@g</option>
+                                                        }
+                                                    </select>                                                   
+                                                </div>                                            
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
 

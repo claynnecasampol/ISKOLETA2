@@ -4,13 +4,20 @@
 @model FITNSS.Models.StudentProfileModel
 
 <div class="d-flex">
-
     @Html.Partial("Sidebar")
+
     <div class="main-content-student">
         <div class="container-fluid p-5">
             <div class="mb-3">
                 <h2 class="m-0">Health Sync Module</h2>
+                @* Add short explanation to the page  *@
+                <p class="fs-5 text-muted m-0">Sync your health data by entering your BMI and pairing your smartwatch for seamless tracking.</p>
             </div>
+
+            @* =========================
+               ORIGINAL CODE (For Reference)
+               ========================= *@
+            @* 
             <div class="card border-0" style="border-radius: 20px;">
                 <form method="post" asp-controller="Student" asp-action="Bmi">
                     <div class="card-body m-3">
@@ -39,40 +46,150 @@
                                                 <input type="text" name="Height" class="form-control" value="@Model.Height" />
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
+
                             <div class="text-end mt-4">
                                 <button type="submit" class="btn btn-lg btn-danger">Save BMI</button>
                             </div>
                         </div>
-
                     </div>
                 </form>
             </div>
-            <br />
+            *@
+
+            <!-- ✅ NEW CLEANED-UP CODE -->
             <div class="card border-0" style="border-radius: 20px;">
-                    <div class="card-body m-3">
-                        <h2 class="mx-3">Smartwatch Pairing</h2>
+                <div class="card-body m-3">
+                    <h3 class="text-start" style="font-weight: bold;">Body Composition</h3>
+                    <p class="fs-5 text-muted m-0 text-start">Track your progress with ease!</p>
 
-                        <div class="card-body">
-                            <p>To give you personalized insights and help you stay on top of your sports, we’ll be syncing key health data from your smartwatch to your ISKOLETA dashboard.</p>
-                            <p>Please confirm which metrics you’re comfortable sharing:</p>
-                            <ul>
-                                <li>BMI (Body Mass Index)</li>
-                                <li>Heart Rate</li>
-                                <li>Steps</li>
-                                <li>Sleep Duration</li>
-                            </ul>
+                    @* ✅ Kapag may BMI (ViewBag.Bmi may laman at hindi ka nag-uupdate) *@
+                    @if (ViewBag.Bmi != null && ViewBag.ShowForm != true)
+                    {
+                        <div class="text-center">
+                            <p class="text-secondary">Your BMI:</p>
+                            <h1><strong>@ViewBag.Bmi</strong></h1>
+                            @* <p class="text-secondary">
+                                <strong style="color:@ViewBag.BmiColor;">
+                                    @ViewBag.BmiCategory
+                                </strong>
+                            </p> *@
+                            <p class="text-secondary">
+                                <span style="background-color:@ViewBag.BmiColor; 
+                                color: white; padding: 6px 12px; 
+                                border-radius: 15px; 
+                                font-weight: 600;   
+                                display:  inline-block; 
+                                min-width: 130px; 
+                                text-align: center;">
+                                @ViewBag.BmiCategory
+                                </span>
+                            </p>
+                            <p class="text-muted small mt-2">
+                                Note: BMI is a general estimate and may not reflect muscle mass, athletic build, or individual health conditions.
+                            </p>
+                            @if (ViewBag.BmiLastUpdated != null)
+                            {
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <p class="text-muted mb-0">
+                                        Last Update: <strong>@ViewBag.BmiLastUpdated</strong>
+                                    </p>
+                                    <a class="btn btn-lg btn-danger"
+                                       style="border-radius: 12px; color: white; padding: 10px 20px;"
+                                       href="@Url.Action("Bmi", "Student", new { userId = Model.userId, showForm = true })">
+                                        Update BMI
+                                    </a>
+                                </div>
+                            }
                         </div>
+                    }
+                    @* ✅ Kapag wala pang BMI *@
+                    else if (ViewBag.Bmi == null && ViewBag.ShowForm != true)
+                    {
+                        <div class="d-flex justify-content-center mt-5 mb-2">
+                            <p class="text-muted fs-5 text-center mb-0">
+                                No BMI recorded yet.
+                            </p>
+                        </div>
+                        <div class="text-end mt-4">
+                            <a class="btn btn-lg btn-danger"
+                               style="border-radius: 12px; color: white; padding: 10px 20px;"
+                               href="@Url.Action("Bmi", "Student", new { userId = Model.userId, showForm = true })">
+                                Update BMI
+                            </a>
+                        </div>
+                    }
+                    @* ✅ Kapag nag-update ng BMI *@
+                    else if (ViewBag.ShowForm == true)
+                    {
+                        <form method="post" asp-controller="Student" asp-action="Bmi">
+                            <input type="hidden" name="userId" value="@Model.userId" />
 
-                    </div>
+                            <div class="row mt-4" style="row-gap: 1rem;">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Age</label>
+                                        <input type="text" name="Age" class="form-control" value="@Model.Age" />
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Weight (kg)</label>
+                                        <input type="text" name="Weight" class="form-control" value="@Model.Weight" />
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Height (cm)</label>
+                                        <input type="text" name="Height" class="form-control" value="@Model.Height" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-4 d-flex justify-content-end gap-3">
+                                <button type="submit"
+                                        class="btn btn-lg btn-danger"
+                                        style="border-radius: 12px; color: white; padding: 10px 20px; font-weight: 600;">
+                                    Save BMI
+                                </button>
+
+                                <a class="btn btn-lg btn-outline-secondary"
+                                   style="border-radius: 12px; padding: 10px 20px; font-weight: 600;"
+                                   href="@Url.Action("Bmi", "Student", new { userId = Model.userId })">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    }
+                </div>
             </div>
+
+            <br />
+
+            <!-- ✅ SMARTWATCH CARD -->
+            <div class="card border-0" style="border-radius: 20px;">
+                <div class="card-body m-3">
+                    <h3 class="mx-3" style="font-weight: bold;">Smartwatch Pairing</h3>
+                    <div class="card-body">
+                        <p>
+                            To give you personalized insights and help you stay on top of your sports,
+                            we’ll be syncing key health data from your smartwatch to your ISKOLETA dashboard.
+                        </p>
+                        <p>Please confirm which metrics you’re comfortable sharing:</p>
+                        <ul>
+                            <li>BMI (Body Mass Index)</li>
+                            <li>Heart Rate</li>
+                            <li>Steps</li>
+                            <li>Sleep Duration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
     @Html.Partial("RightSidebar")
 </div>
-
-}

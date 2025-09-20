@@ -41,7 +41,12 @@ namespace FITNSS.Controllers
                 using var connection = new SqlConnection(connectionString);
                 connection.Open();
 
-                var query = "SELECT id, role, password FROM users WHERE email = @Email";
+                //Orig Code
+                //var query = "SELECT id, role, password FROM users WHERE email = @Email";
+
+                //NEW!! Added firstname for firstname sa dashboard
+                var query = "SELECT id, role, password, firstname FROM users WHERE email = @Email";
+                //END OF NEW
                 using var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Email", email);
 
@@ -55,6 +60,9 @@ namespace FITNSS.Controllers
                 var userId = reader["id"]?.ToString();
                 var userRole = reader["role"]?.ToString();
                 var dbPasswordHash = reader["password"]?.ToString();
+                //NEW!!
+                var firstName = reader["firstname"]?.ToString();
+                //END OF NEW
 
                 if (string.IsNullOrEmpty(dbPasswordHash) || !BCrypt.Net.BCrypt.Verify(password, dbPasswordHash))
                 {
@@ -64,12 +72,36 @@ namespace FITNSS.Controllers
 
                 HttpContext.Session.SetString("userId", userId ?? "defaultUserId");
                 HttpContext.Session.SetString("userRole", userRole ?? "defaultUserRole");
+                //NEW!!
+                HttpContext.Session.SetString("firstName", firstName ?? "Guest");
+                //END OF NEW
+
+                // NEW!! Set greeting based on current time
+                var now = DateTime.Now.TimeOfDay;
+                string greeting;
+
+                if (now >= TimeSpan.FromHours(0) && now < TimeSpan.FromHours(12))
+                {
+                    greeting = "Good Morning";
+                }
+                else if (now >= TimeSpan.FromHours(12) && now < TimeSpan.FromHours(18))
+                {
+                    greeting = "Good Afternoon";
+                }
+                else
+                {
+                    greeting = "Good Evening";
+                }
+
+                HttpContext.Session.SetString("greeting", greeting);
+                // END OF NEW
+
 
                 return userRole switch
                 {
-                    "3" => Redirect("/Student/Dashboard"),       // Admin
-                    "1" => Redirect("/Sdpo/Dashboard"), // Dentist
-                    "2" => Redirect("/Coach/Dashboard"), // Receptionist
+                    "3" => Redirect("/Student/Dashboard"),       // Student
+                    "1" => Redirect("/Sdpo/Dashboard"), // Admin
+                    "2" => Redirect("/Coach/Dashboard"), // Coach
                     _ => Redirect("/")                         // Client
                 };
             }

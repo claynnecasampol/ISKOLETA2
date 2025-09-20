@@ -1,4 +1,6 @@
-﻿namespace FITNSS.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FITNSS.Models
 {
     public class CoachProfileModel
     {

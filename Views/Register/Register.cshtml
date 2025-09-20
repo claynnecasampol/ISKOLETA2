@@ -3,16 +3,22 @@
 }
 <div class="main-wrapper">
     @Html.Partial("Navbar")
-    <div class="row w-100 d-flex" style="height: calc(100vh - 72px);">
-        <div class="col-11 col-md-8 col-lg-6 col-xl-4 m-auto" style="background: black;border-radius: 20px;">
+    <div style="height: 72px;"></div>
+        @* Orig Code
+        <div class="row w-100 d-flex" style="height: calc(100vh - 72px;"> *@
+        <div class="container-fluid d-flex justify-content-center align-items-center registration-box" style="min-height: calc(100vh - 72px);">
+                @* Orig code
+                <div class="col-11 col-md-8 col-lg-6 col-xl-4 m-auto" style="background: black;border-radius: 20px;">
+                Orig code <div class="login-box-body" style="padding: 20px 30px;"> *@
 
-    <div class="login-box-body" style="padding: 20px 30px;">
-       
-        <br>
-        <h3 class="text-white text-center">Student-Athlete Registration</h3>
-        <br>
-        <form asp-action="Register" method="POST">
-         <div class="row" style="row-gap: 2rem;">
+                @* NEW!! FIX THE WIDTH AND STYLING OF THE REGISTRATION *@
+            <div class="col-12 col-md-10 col-lg-8 col-xl-6 m-auto" style="background: black; border-radius: 20px; padding: 20px 30px; position: relative;">
+                @* END OF NEW *@
+                <br>
+                <h3 class="text-white text-center">Student-Athlete Registration</h3>
+                <br>
+                <form asp-action="Register" method="POST">
+                 <div class="row" style="row-gap: 2rem;">
                         <div class="col-12 col-lg-4">
                             <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
                                 <input type="text" name="firstname" id="FirstName" placeholder="First Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
@@ -50,6 +56,7 @@
                         </div> *@
 
                         @* new code for password *@
+                        @* Original password field *@
                         <div class="col-12 col-lg-12 mb-3">
                             <div class="form-group has-feedback" style="position: relative;">
                                 <input type="password" name="password" id="Password" placeholder="******"
@@ -60,11 +67,23 @@
                             </div>
                             <small id="passwordFeedback" class="text-danger mt-2 d-block" style="font-family: 'Kanit', sans-serif;"></small>
                         </div>
-                        
+                        @* Re-enter the password *@
+                        <div class="col-12 col-lg-12 mb-3">
+                            <div class="form-group has-feedback" style="position: relative;">
+                                <input type="password" name="confirmPassword" id="ConfirmPassword" placeholder="Re-enter Password"
+                                       style="width: 100%; height: 45px; border: unset; box-shadow: none; outline-style: none;"
+                                       required>
+                                <i class="fa fa-lock toggle-password"
+                                   style="top: 50%; transform: translateY(-50%); position: absolute; right: 10px;"></i>
+                            </div>
+                            <small id="confirmPasswordFeedback" class="text-danger mt-2 d-block" style="font-family: 'Kanit', sans-serif;"></small>
+                        </div>
+
 
                         <div class="col-12 col-lg-12">
                             <div>
-                                <button type="submit" class="btn w-100 btn-block btn-flat" id="registerBtn" style="color: #fff; border: unset;height: 45px;font-size: 23px;background:#E10101; font-family: 'Roboto', sans-serif;" name="register">Register</button>
+                                @* NEW!! MAKE THE REGISTRATION ALL SMALL AND BOLD *@
+                                <button type="submit" class="btn w-100 btn-block btn-flat" id="registerBtn" style="color: #fff; border: unset;height: 45px;font-size: 23px;background:#E10101; font-family: 'Roboto', sans-serif; font-weight: 600;" name="register">register</button>
                             </div>
                             @* added an id="registerBtn" for the script of password. *@
                             <div class="mt-3 text-center">
@@ -73,48 +92,59 @@
                         </div>
                        
          </div>
+
         </form>
                 @* added a safety password and email verification script. This script prohibits the user to register if the password and email requirement are not satisfied.*@
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const passwordInput = document.getElementById("Password");
-                        const emailInput = document.getElementById("Email");
-                        const passwordFeedback = document.getElementById("passwordFeedback");
-                        const emailFeedback = document.getElementById("emailFeedback");
-                        const registerBtn = document.getElementById("registerBtn");
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const passwordInput = document.getElementById("Password");
+                    const confirmPasswordInput = document.getElementById("ConfirmPassword");
+                    const emailInput = document.getElementById("Email");
 
-                        function validateForm() {
-                            const password = passwordInput.value;
-                            const email = emailInput.value;
+                    const passwordFeedback = document.getElementById("passwordFeedback");
+                    const confirmPasswordFeedback = document.getElementById("confirmPasswordFeedback");
+                    const emailFeedback = document.getElementById("emailFeedback");
+                    const registerBtn = document.getElementById("registerBtn");
 
-                            const hasUppercase = /[A-Z]/.test(password);
-                            const hasNumber = /[0-9]/.test(password);
-                            const hasSymbol = /[^A-Za-z0-9]/.test(password);
-                            const isLongEnough = password.length >= 8;
-                            const isPasswordValid = hasUppercase && hasNumber && hasSymbol && isLongEnough;
+                    function validateForm() {
+                        const password = passwordInput.value;
+                        const confirmPassword = confirmPasswordInput.value;
+                        const email = emailInput.value;
 
-                            const isEmailValid = email.endsWith("iskolarngbayan.pup.edu.ph");
+                        const hasUppercase = /[A-Z]/.test(password);
+                        const hasNumber = /[0-9]/.test(password);
+                        const hasSymbol = /[^A-Za-z0-9]/.test(password);
+                        const isLongEnough = password.length >= 8;
+                        const isPasswordValid = hasUppercase && hasNumber && hasSymbol && isLongEnough;
 
-                            // Update feedback messages
-                            passwordFeedback.textContent = isPasswordValid ? "" : "Password must be at least 8 characters and include a capital letter, number, and symbol.";
-                            emailFeedback.textContent = isEmailValid ? "" : "Email must end with iskolarngbayan.pup.edu.ph";
+                        const passwordsMatch = password === confirmPassword;
+                        const isEmailValid = email.endsWith("iskolarngbayan.pup.edu.ph");
 
-                            // Enable or disable register button
-                            if (isPasswordValid && isEmailValid) {
-                                registerBtn.disabled = false;
-                                registerBtn.style.opacity = "1";
-                                registerBtn.style.cursor = "pointer";
-                            } else {
-                                registerBtn.disabled = true;
-                                registerBtn.style.opacity = "0.6";
-                                registerBtn.style.cursor = "not-allowed";
-                            }
+                        // Feedback messages
+                        passwordFeedback.textContent = isPasswordValid ? "" : "Password must be at least 8 characters and include a capital letter, number, and symbol.";
+                        confirmPasswordFeedback.textContent = passwordsMatch ? "" : "Passwords do not match.";
+                        emailFeedback.textContent = isEmailValid ? "" : "Email must end with iskolarngbayan.pup.edu.ph";
+
+                        // Enable or disable register button
+                        if (isPasswordValid && passwordsMatch && isEmailValid) {
+                            registerBtn.disabled = false;
+                            registerBtn.style.opacity = "1";
+                            registerBtn.style.cursor = "pointer";
+                        } else {
+                            registerBtn.disabled = true;
+                            registerBtn.style.opacity = "0.6";
+                            registerBtn.style.cursor = "not-allowed";
                         }
+                    }
 
-                        passwordInput.addEventListener("input", validateForm);
-                        emailInput.addEventListener("input", validateForm);
-                    });
-                </script>
+                      const wrapper = document.querySelector('.main-wrapper');
+                      wrapper.style.minHeight = window.innerHeight + "px";
+
+                    passwordInput.addEventListener("input", validateForm);
+                    confirmPasswordInput.addEventListener("input", validateForm);
+                    emailInput.addEventListener("input", validateForm);
+                });
+            </script>
 
         <br>
         @if (ViewData["Message"] != null)
@@ -125,6 +155,3 @@
         </div>
 
     </div>
-
-    </div>
- </div>

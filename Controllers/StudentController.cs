@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BCrypt.Net;
+using FITNSS.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Data.SqlClient;
-using FITNSS.Models;
-using BCrypt.Net;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace FITNSS.Controllers
@@ -24,9 +25,10 @@ namespace FITNSS.Controllers
             _configuration = configuration;
             _env = env;
         }
+
+        //DASHBOARD
         public IActionResult Dashboard()
         {
-
 
             // Sample data – ideally galing sa database
             var days = new[] { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
@@ -197,13 +199,13 @@ GROUP BY DATENAME(WEEKDAY, date)";
 
 
                 string querySingleHeartbeat = @"
-SELECT 
-    SUM(heartbeat) AS Total,
-    DATENAME(WEEKDAY, date) AS DayName
-FROM student_heartbeat
-WHERE users_id = @UserId
-  AND date = @currentdate
-GROUP BY DATENAME(WEEKDAY, date)";
+                SELECT 
+                    SUM(heartbeat) AS Total,
+                    DATENAME(WEEKDAY, date) AS DayName
+                FROM student_heartbeat
+                WHERE users_id = @UserId
+                  AND date = @currentdate
+                GROUP BY DATENAME(WEEKDAY, date)";
 
                 using (SqlCommand cmd = new SqlCommand(querySingleHeartbeat, conn))
                 {
@@ -230,10 +232,6 @@ GROUP BY DATENAME(WEEKDAY, date)";
             ViewBag.Heartbeats = JsonConvert.SerializeObject(heartbeats);
             ViewBag.Steps = JsonConvert.SerializeObject(steps);
             ViewBag.Calories = JsonConvert.SerializeObject(calories);
-
-
-
-
 
 
             StudentProfileModel model = new StudentProfileModel();
@@ -263,26 +261,65 @@ GROUP BY DATENAME(WEEKDAY, date)";
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
-
-
-                        }
+                        }                      
                     }
                 }
 
+                // =============================
+                // NEW!! Load Target Goals from database
+                // =============================
+                string queryTargets = @"
+                SELECT target_heartbeat, target_steps, target_calories
+                FROM student_profile
+                WHERE users_id = @UserId";
+
+                using (SqlCommand cmdTargets = new SqlCommand(queryTargets, conn))
+                {
+                    cmdTargets.Parameters.AddWithValue("@UserId", Convert.ToInt32(userId));
+                    using (SqlDataReader readerTargets = cmdTargets.ExecuteReader())
+                    {
+                        if (readerTargets.Read())
+                        {
+                            model.TargetHeartbeat = readerTargets["target_heartbeat"] != DBNull.Value
+                                                    ? Convert.ToInt32(readerTargets["target_heartbeat"])
+                                                    : null;
+
+                            model.TargetSteps = readerTargets["target_steps"] != DBNull.Value
+                                                    ? Convert.ToInt32(readerTargets["target_steps"])
+                                                    : null;
+
+                            model.TargetCalories = readerTargets["target_calories"] != DBNull.Value
+                                                    ? Convert.ToInt32(readerTargets["target_calories"])
+                                                    : null;
+                        }
+                    }
+                }
+                // =============================
+                // END OF NEW
+                // =============================
+
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                    SELECT 
+                        ISNULL(SUM(km), 0) AS TotalKm,
+                        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                    FROM student_running
+                    WHERE users_id = @UserId
+                      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -314,14 +351,14 @@ GROUP BY DATENAME(WEEKDAY, date)";
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -350,14 +387,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -387,10 +424,10 @@ WHERE users_id = @UserId
 
 
                 string queryNotifications = @"
-    SELECT TOP 10 id, description, timestamp
-    FROM notifications
-    WHERE student_id = @UserId
-    ORDER BY timestamp DESC";
+                SELECT TOP 10 id, description, timestamp
+                FROM notifications
+                WHERE student_id = @UserId
+                ORDER BY timestamp DESC";
 
                 using (SqlCommand cmd = new SqlCommand(queryNotifications, conn))
                 {
@@ -413,20 +450,20 @@ WHERE users_id = @UserId
                 var events = new List<StudentCalendarModel>();
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                    -- Student’s own calendar events
+                    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                    FROM student_calendar
+                    WHERE users_id = @UserId
 
-    UNION
+                    UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                    -- Training schedules where student is selected
+                    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                    FROM coach_training_schedule cts
+                    INNER JOIN coach_training_schedule_selected_athletes sa 
+                        ON cts.id = sa.coach_training_schedule_id
+                    WHERE sa.student_id = @UserId
+                ";
 
 
 
@@ -454,6 +491,10 @@ WHERE users_id = @UserId
 
             }
 
+            //NEW!! FOR FIRSTNAME AND GREETINGS
+            ViewBag.Greeting = HttpContext.Session.GetString("greeting");
+            ViewBag.FirstName = HttpContext.Session.GetString("firstName");
+            //END OF NEW
             return View(model);
         }
 
@@ -490,8 +531,12 @@ WHERE users_id = @UserId
             return Json(users);
         }
 
+ //PROFILE
         [HttpGet]
-        public IActionResult Profile()
+        //Orig code
+        //public IActionResult Profile()
+        //NEW!! For diff views of student-profile 
+        public IActionResult Profile(bool? showForm, bool? showAfterEdit)
         {
             string userId = HttpContext.Session.GetString("userId");
             if (string.IsNullOrEmpty(userId))
@@ -499,6 +544,11 @@ WHERE users_id = @UserId
 
             StudentProfileModel model = new StudentProfileModel();
             model.userId = userId;
+
+            // NEW!! IMPORTANT FOR CLICKING THE DIFF VIEWS OF PROFILE BEFORE, DURING AND AFTER
+            ViewBag.ShowForm = showForm ?? false;
+            ViewBag.ShowAfterEdit = showAfterEdit ?? false;
+            //END OF NEW
 
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnectionString")))
             {
@@ -517,19 +567,62 @@ WHERE users_id = @UserId
                         if (reader.Read())
                         {
                             model.userId = reader["users_id"].ToString();
-                            model.FirstName = reader["firstname"].ToString();
-                            model.LastName = reader["lastname"].ToString();
-                            model.Email = reader["email"].ToString();
+                            //Orig Code
+                            //model.FirstName = reader["firstname"].ToString();                               
+                            //model.LastName = reader["lastname"].ToString();
+                            //model.Email = reader["email"].ToString();
+
+                            //NEW!! FOR PRE-FILLED INPUT OF FIRST, LAST AND EMAIL DURING REGISTRATION PROCESS
+                            model.FirstName = string.IsNullOrWhiteSpace(reader["firstname"].ToString())
+                                ? HttpContext.Session.GetString("firstName") ?? ""
+                                : reader["firstname"].ToString();
+                            model.LastName = string.IsNullOrWhiteSpace(reader["lastname"].ToString())
+                                ? HttpContext.Session.GetString("lastName") ?? ""
+                                : reader["lastname"].ToString();
+                            model.Email = string.IsNullOrWhiteSpace(reader["email"].ToString())
+                                ? HttpContext.Session.GetString("email") ?? ""
+                                : reader["email"].ToString();
+                            //EMD OF NEW
+
                             model.Course = reader["course"].ToString();
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //NEW!! 
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
+                        }
+                        // NEW!! Fallback: If FirstName, LastName, or Email are still empty, pull from users table
+                        if (string.IsNullOrWhiteSpace(model.FirstName) || string.IsNullOrWhiteSpace(model.LastName) || string.IsNullOrWhiteSpace(model.Email))
+                        {
+                            string fallbackQuery = @"SELECT firstname, lastname, email FROM users WHERE id = @UserId";
 
+                            using (SqlCommand fallbackCmd = new SqlCommand(fallbackQuery, conn))
+                            {
+                                fallbackCmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(userId));
+                                using (SqlDataReader fallbackReader = fallbackCmd.ExecuteReader())
+                                {
+                                    if (fallbackReader.Read())
+                                    {
+                                        if (string.IsNullOrWhiteSpace(model.FirstName))
+                                            model.FirstName = fallbackReader["firstname"].ToString();
 
+                                        if (string.IsNullOrWhiteSpace(model.LastName))
+                                            model.LastName = fallbackReader["lastname"].ToString();
+
+                                        if (string.IsNullOrWhiteSpace(model.Email))
+                                            model.Email = fallbackReader["email"].ToString();
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -537,20 +630,20 @@ WHERE users_id = @UserId
                 var events = new List<StudentCalendarModel>();
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                -- Student’s own calendar events
+                SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                FROM student_calendar
+                WHERE users_id = @UserId
 
-    UNION
+                UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                -- Training schedules where student is selected
+                SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                FROM coach_training_schedule cts
+                INNER JOIN coach_training_schedule_selected_athletes sa 
+                    ON cts.id = sa.coach_training_schedule_id
+                WHERE sa.student_id = @UserId
+            ";
 
 
 
@@ -578,14 +671,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(km), 0) AS TotalKm,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_running
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+            ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -617,14 +710,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -653,14 +746,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -688,16 +781,17 @@ WHERE users_id = @UserId
 
             }
 
-
-            var sports = new[] { "Basketball", "Volleyball", "Tennis" };
+            //NEW!! UPDATE SPORTS COLLECTION
+            var sports = new[] { "Arnis", "Athletics", "Badminton", "Baseball/Softball", "Basketball", "Beach Voleyball", "Chess", "Dance Sport", "E-Sport", "Football", "Futsal", "Karate-Do", "Sepak-Takraw", "Softball", "Swimming", "Table Tennis", "Taekwondo", "Voleyball" };
             ViewBag.Sports = new SelectList(sports, model.Sport);
-
-            var yearlevels = new[] { "1st Year", "2nd Year", "3rd Year", "4th Year" };
+            //NEW!! ADDED A YEAR (5TH YEAR)
+            var yearlevels = new[] { "1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year" };
             ViewBag.YearLevels = new SelectList(yearlevels, model.YearLevel);
 
             return View(model);
         }
 
+        //STUDENT PROFILE
         [HttpPost]
         public IActionResult Profile(StudentProfileModel model, IFormFile ProfilePhoto)
         {
@@ -726,18 +820,43 @@ WHERE users_id = @UserId
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnectionString")))
             {
                 conn.Open();
-                string query = @"UPDATE student_profile SET 
-                            firstname=@FirstName,
-                            lastname=@LastName,
-                            email=@Email,
-                            course=@Course,
-                            year_level=@YearLevel,
-                            contact_number=@ContactNumber,
-                            emergency_contact=@EmergencyContact,
-                            date_of_birth=@DateOfBirth,
-                            sport=@Sport,
-                            profile_image=@ProfileImagePath
-                         WHERE users_id=@UserId";
+                string query = 
+                         // Orig code. Need to change due to there's no insert for it to enter the database
+                         //   @"UPDATE student_profile SET 
+                         //   firstname=@FirstName,
+                         //   lastname=@LastName,
+                         //   email=@Email,
+                         //   course=@Course,
+                         //   year_level=@YearLevel,
+                         //   contact_number=@ContactNumber,
+                         //   emergency_contact=@EmergencyContact,
+                         //   date_of_birth=@DateOfBirth,
+                         //   sport=@Sport,
+                         //   profile_image=@ProfileImagePath
+                         //WHERE users_id=@UserId";
+
+                //NEW!! to update the sql db
+                        @"MERGE student_profile AS target
+                        USING(SELECT @UserId AS users_id) AS source
+                        ON target.users_id = source.users_id
+                        WHEN MATCHED THEN
+                            UPDATE SET
+                                firstname = @FirstName,
+                                lastname = @LastName,
+                                email = @Email,
+                                course = @Course,
+                                year_level = @YearLevel,
+                                contact_number = @ContactNumber,
+                                emergency_contact = @EmergencyContact,
+                                date_of_birth = @DateOfBirth,
+                                sport = @Sport,                               
+                                profile_image = @ProfileImagePath
+                        WHEN NOT MATCHED THEN
+                            INSERT(users_id, firstname, lastname, email, course, year_level, contact_number, emergency_contact, date_of_birth, sport, profile_image)
+                            VALUES(@UserId, @FirstName, @LastName, @Email, @Course, @YearLevel, @ContactNumber, @EmergencyContact, @DateOfBirth, @Sport, @ProfileImagePath);
+                        ";
+                            model.userId = userId;
+                //END OF NEW
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -748,10 +867,21 @@ WHERE users_id = @UserId
                     cmd.Parameters.AddWithValue("@YearLevel", model.YearLevel ?? "");
                     cmd.Parameters.AddWithValue("@ContactNumber", model.ContactNumber ?? "");
                     cmd.Parameters.AddWithValue("@EmergencyContact", model.EmergencyContact ?? "");
-                    cmd.Parameters.AddWithValue("@DateOfBirth", model.DateOfBirth ?? "");
+                    //Orig Code
+                    //cmd.Parameters.AddWithValue("@DateOfBirth", model.DateOfBirth ?? "");
+
+                    //NEW!! Turn it to this since there's an error 
+                    cmd.Parameters.AddWithValue("@DateOfBirth", model.DateOfBirth ?? (object)DBNull.Value);
+                    //END OF NEW
+
                     cmd.Parameters.AddWithValue("@Sport", model.Sport ?? "");
                     cmd.Parameters.AddWithValue("@ProfileImagePath", model.ProfileImagePath ?? "");
-                    cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(model.userId));
+                    //Orig Code
+                    //cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(model.userId));
+
+                    //NEW!!
+                    cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(userId));
+                    //END OF NEW
 
                     cmd.ExecuteNonQuery();
                 }
@@ -761,20 +891,20 @@ WHERE users_id = @UserId
 
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                -- Student’s own calendar events
+                SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                FROM student_calendar
+                WHERE users_id = @UserId
 
-    UNION
+                UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                -- Training schedules where student is selected
+                SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                FROM coach_training_schedule cts
+                INNER JOIN coach_training_schedule_selected_athletes sa 
+                    ON cts.id = sa.coach_training_schedule_id
+                WHERE sa.student_id = @UserId
+            ";
 
 
 
@@ -801,14 +931,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(km), 0) AS TotalKm,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_running
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+            ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -840,14 +970,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -876,14 +1006,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -913,20 +1043,28 @@ WHERE users_id = @UserId
             ViewBag.Message = "Profile updated successfully!";
 
 
-            var sports = new[] { "Basketball", "Volleyball", "Tennis" };
+            //Orig Code
+            //var sports = new[] { "Basketball", "Volleyball", "Tennis" };
+            //NEW CODE!! ADDED ADDITIONAL SPORTS
+            var sports = new[] { "Arnis", "Athletics", "Badminton", "Baseball/Softball", "Basketball", "Beach Voleyball", "Chess", "Dance Sport", "E-Sport", "Football", "Futsal", "Karate-Do", "Sepak-Takraw", "Softball", "Swimming", "Table Tennis", "Taekwondo", "Voleyball" };
             ViewBag.Sports = new SelectList(sports, model.Sport);
-
-            var yearlevels = new[] { "1st Year", "2nd Year", "3rd Year", "4th Year" };
+            //ADDED 5TH YEAR IN THE OPTION 
+            var yearlevels = new[] { "1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year" };
             ViewBag.YearLevels = new SelectList(yearlevels, model.YearLevel);
+
             return View(model);
         }
 
 
 
 
-
+        //BMI
         [HttpGet]
-        public IActionResult Bmi()
+        //Orig Code
+        //public IActionResult Bmi()
+        //NEW!! ADDED THE PARAMETERS
+        public IActionResult Bmi(bool showForm = false)
+        //END OF NEW
         {
             string userId = HttpContext.Session.GetString("userId");
             if (string.IsNullOrEmpty(userId))
@@ -938,7 +1076,8 @@ WHERE users_id = @UserId
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnectionString")))
             {
                 conn.Open();
-                string query = @"SELECT users_id, age, weight, height
+                //NEW!! ADDED BMI LAST UPDATED FOR THE DATE
+                string query = @"SELECT users_id, age, weight, height, bmi_last_updated
                          FROM student_profile
                          WHERE users_id = @UserId";
 
@@ -955,6 +1094,51 @@ WHERE users_id = @UserId
                             model.Weight = reader["weight"].ToString();
                             model.Height = reader["height"].ToString();
 
+                            //NEW!!
+                            // Assign BmiLastUpdated
+                            if (reader["bmi_last_updated"] != DBNull.Value)
+                                model.BmiLastUpdated = Convert.ToDateTime(reader["bmi_last_updated"]);
+
+                            //FOR COMPUTATION OF RESULT NG BMI
+                            if (double.TryParse(model.Weight, out double weight) &&
+                                double.TryParse(model.Height, out double heightCm) &&
+                                heightCm > 0)
+                            {
+                                double heightM = heightCm / 100; // convert cm to meters
+                                double bmi = weight / (heightM * heightM);
+                                ViewBag.Bmi = Math.Round(bmi, 2);
+                              
+                                string category;
+                                string color;
+
+                                if (bmi < 18.5)
+                                {
+                                    category = "Underweight";
+                                    color = "#5BC0EB"; // light blue
+                                }
+                                else if (bmi < 24.9)
+                                {
+                                    category = "Normal";
+                                    color = "#3CB371"; // green
+                                }
+                                else if (bmi < 29.9)
+                                {
+                                    category = "Overweight";
+                                    color = "#FFA500"; // amber/orange
+                                }
+                                else
+                                {
+                                    category = "Obese";
+                                    color = "#FF6B6B"; // soft red
+                                }
+
+                                ViewBag.BmiCategory = category;
+                                    ViewBag.BmiColor = color;
+                            }
+
+                            // Assign ViewBag for last updated
+                            ViewBag.BmiLastUpdated = model.BmiLastUpdated?.ToString("MMM dd, yyyy hh:mm tt");
+                            //END OF NEW
 
                         }
                     }
@@ -964,20 +1148,20 @@ WHERE users_id = @UserId
                 var events = new List<StudentCalendarModel>();
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                -- Student’s own calendar events
+                SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                FROM student_calendar
+                WHERE users_id = @UserId
 
-    UNION
+                UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                -- Training schedules where student is selected
+                SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                FROM coach_training_schedule cts
+                INNER JOIN coach_training_schedule_selected_athletes sa 
+                    ON cts.id = sa.coach_training_schedule_id
+                WHERE sa.student_id = @UserId
+            ";
 
 
 
@@ -1004,14 +1188,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(km), 0) AS TotalKm,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_running
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+            ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -1043,14 +1227,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -1079,14 +1263,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -1115,9 +1299,13 @@ WHERE users_id = @UserId
             }
 
 
-
+            //NEW!! FOR BMI UPDATE
+            ViewBag.ShowForm = showForm;
+            //END OF NEW
             return View(model);
         }
+
+        /*STUDENT BMI*/
 
         [HttpPost]
         public IActionResult Bmi(StudentProfileModel model)
@@ -1126,42 +1314,148 @@ WHERE users_id = @UserId
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Login");
 
+            // NEW!! Force set userId from Session para sure na tama
+            model.userId = userId;
+
             using (SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnectionString")))
             {
                 conn.Open();
-                string query = @"UPDATE student_profile SET 
-                            age=@Age,
-                            weight=@Weight,
-                            height=@Height
-                         WHERE users_id=@UserId";
+                string query =
+                    //Orig Code
+                    //@"UPDATE student_profile SET 
+                    //        age=@Age,
+                    //        weight=@Weight,
+                    //        height=@Height
+                    //     WHERE users_id=@UserId";
+
+                    //NEW!! ADDED AN INSERT TO ADD THE USERS INPUT IN THE DATABASE
+                     @"
+                        IF EXISTS (SELECT 1 FROM student_profile WHERE users_id = @UserId)
+                        BEGIN
+                            UPDATE student_profile
+                            SET age = @Age,
+                                weight = @Weight,
+                                height = @Height,
+                                bmi_last_updated = @BmiLastUpdated
+                            WHERE users_id = @UserId
+                        END
+                        ELSE
+                        BEGIN
+                            INSERT INTO student_profile (users_id, age, weight, height, bmi_last_updated)
+                            VALUES (@UserId, @Age, @Weight, @Height, @BmiLastUpdated)
+                        END";
+                //END OF NEW
+
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Age", model.Age ?? "");
-                    cmd.Parameters.AddWithValue("@Weight", model.Weight ?? "");
-                    cmd.Parameters.AddWithValue("@Height", model.Height ?? "");
-                    cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(model.userId));
+                    //Orig Code
+                    //cmd.Parameters.AddWithValue("@Age", model.Age ?? "");
+                    //cmd.Parameters.AddWithValue("@Weight", model.Weight ?? "");
+                    //cmd.Parameters.AddWithValue("@Height", model.Height ?? "");
 
-                    cmd.ExecuteNonQuery();
+                    //NEW!! NEED TO CHANGE TO THIS SINCE NAGSSILENT FAIL SYA
+                    cmd.Parameters.AddWithValue("@Age", int.TryParse(model.Age, out int age) ? age : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Weight", int.TryParse(model.Weight, out int weight) ? weight : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Height", int.TryParse(model.Height, out int height) ? height : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(model.userId));
+                    cmd.Parameters.AddWithValue("@BmiLastUpdated", DateTime.Now);
+                    //END OF NEW
+
+                    // Save the number of rows affected
+                    int rowsAffected = cmd.ExecuteNonQuery();                  
                 }
+                // ======================================================
+                // NEW!! 2️⃣ COMPUTE BMI + DETERMINE CATEGORY + ASSIGN TARGETS
+                // ======================================================
+                if (int.TryParse(model.Weight, out int w) &&
+                    int.TryParse(model.Height, out int h) && h > 0)
+                {
+                    double heightM = h / 100.0;
+                    double bmiValue = w / (heightM * heightM);
+                    string bmiCategory;
+
+                    if (bmiValue < 18.5)
+                        bmiCategory = "Underweight";
+                    else if (bmiValue < 24.9)
+                        bmiCategory = "Normal";
+                    else if (bmiValue < 29.9)
+                        bmiCategory = "Overweight";
+                    else
+                        bmiCategory = "Obese";
+
+                    // Assign target values based on category
+                    int targetHeartbeat = 0;
+                    int targetSteps = 0;
+                    int targetCalories = 0;
+
+                    switch (bmiCategory)
+                    {
+                        case "Underweight":
+                            targetHeartbeat = 70;
+                            targetSteps = 8000;
+                            targetCalories = 2500;
+                            break;
+                        case "Normal":
+                            targetHeartbeat = 75;
+                            targetSteps = 10000;
+                            targetCalories = 2000;
+                            break;
+                        case "Overweight":
+                            targetHeartbeat = 80;
+                            targetSteps = 12000;
+                            targetCalories = 1800;
+                            break;
+                        case "Obese":
+                            targetHeartbeat = 85;
+                            targetSteps = 15000;
+                            targetCalories = 1600;
+                            break;
+                    }
+
+                    // ======================================================
+                    // 3️⃣ UPSERT TO student_profile TABLE
+                    // ======================================================
+                    string upsertQuery = @"
+                MERGE student_profile AS t
+                USING (SELECT @UserId AS users_id) AS s
+                ON t.users_id = s.users_id
+                WHEN MATCHED THEN
+                    UPDATE SET target_heartbeat=@TargetHeartbeat, 
+                               target_steps=@TargetSteps, 
+                               target_calories=@TargetCalories
+                WHEN NOT MATCHED THEN
+                    INSERT (users_id, target_heartbeat, target_steps, target_calories)
+                    VALUES (@UserId, @TargetHeartbeat, @TargetSteps, @TargetCalories);";
+
+                    using (SqlCommand cmd = new SqlCommand(upsertQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", Convert.ToInt32(model.userId));
+                        cmd.Parameters.AddWithValue("@TargetHeartbeat", targetHeartbeat);
+                        cmd.Parameters.AddWithValue("@TargetSteps", targetSteps);
+                        cmd.Parameters.AddWithValue("@TargetCalories", targetCalories);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                //END OF NEW
 
                 var events = new List<StudentCalendarModel>();
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                -- Student’s own calendar events
+                SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                FROM student_calendar
+                WHERE users_id = @UserId
 
-    UNION
+                UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                -- Training schedules where student is selected
+                SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                FROM coach_training_schedule cts
+                INNER JOIN coach_training_schedule_selected_athletes sa 
+                    ON cts.id = sa.coach_training_schedule_id
+                WHERE sa.student_id = @UserId
+            ";
 
 
 
@@ -1188,14 +1482,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(km), 0) AS TotalKm,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_running
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+            ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -1227,14 +1521,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -1263,14 +1557,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -1299,12 +1593,17 @@ WHERE users_id = @UserId
 
             }
 
-            ViewBag.Message = "BMI updated successfully!";
+            //Orig Code
+            //ViewBag.Message = "BMI updated successfully!";
+            //return View(model);
 
-
-            return View(model);
+            //NEW!!
+            TempData["Message"] = "BMI updated successfully!";
+            return RedirectToAction("Bmi");
+            //END OF NEW
         }
 
+        //CALENDAR
 
         [HttpGet]
         public IActionResult Calendar()
@@ -1341,7 +1640,15 @@ WHERE users_id = @UserId
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -1354,20 +1661,20 @@ WHERE users_id = @UserId
                 var events = new List<StudentCalendarModel>();
 
                 string queryTrainingSchedule = @"
-    -- Student’s own calendar events
-    SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
-    FROM student_calendar
-    WHERE users_id = @UserId
+                -- Student’s own calendar events
+                SELECT title, start_date, end_date, NULL AS time, 'Active Resting' AS ActivityType
+                FROM student_calendar
+                WHERE users_id = @UserId
 
-    UNION
+                UNION
 
-    -- Training schedules where student is selected
-    SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
-    FROM coach_training_schedule cts
-    INNER JOIN coach_training_schedule_selected_athletes sa 
-        ON cts.id = sa.coach_training_schedule_id
-    WHERE sa.student_id = @UserId
-";
+                -- Training schedules where student is selected
+                SELECT cts.title, cts.start_date, cts.end_date, cts.time, 'Training' AS ActivityType
+                FROM coach_training_schedule cts
+                INNER JOIN coach_training_schedule_selected_athletes sa 
+                    ON cts.id = sa.coach_training_schedule_id
+                WHERE sa.student_id = @UserId
+            ";
 
 
 
@@ -1395,14 +1702,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalKmThisWeek = @"
-    SELECT 
-        ISNULL(SUM(km), 0) AS TotalKm,
-        COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-    FROM student_running
-    WHERE users_id = @UserId
-      AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-      AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(km), 0) AS TotalKm,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_running
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 7 - (DATEDIFF(DAY, 0, CAST(GETDATE() AS date)) % 7), CAST(GETDATE() AS date))
+            ";
 
 
                 using (var cmd = new SqlCommand(queryTotalKmThisWeek, conn))
@@ -1434,14 +1741,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalHoursThisWeek = @"
-SELECT 
-    ISNULL(SUM(hours), 0) AS TotalHours,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_sleeping
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(hours), 0) AS TotalHours,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_sleeping
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalHoursThisWeek, conn))
                 {
@@ -1470,14 +1777,14 @@ WHERE users_id = @UserId
 
 
                 string queryTotalCaloriesThisWeek = @"
-SELECT 
-    ISNULL(SUM(calories), 0) AS TotalCalories,
-    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
-FROM student_calories
-WHERE users_id = @UserId
-  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
-";
+                SELECT 
+                    ISNULL(SUM(calories), 0) AS TotalCalories,
+                    COUNT(DISTINCT CAST([date] AS DATE)) AS TotalDays
+                FROM student_calories
+                WHERE users_id = @UserId
+                  AND [date] >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                  AND [date] <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS date))
+                ";
 
                 using (var cmd = new SqlCommand(queryTotalCaloriesThisWeek, conn))
                 {
@@ -1559,7 +1866,7 @@ WHERE users_id = @UserId
             }));
         }
 
-
+        //ACADEMIC MONITORING
         public IActionResult AcademicMonitoring()
         {
             string userId = HttpContext.Session.GetString("userId");
@@ -1593,7 +1900,15 @@ WHERE users_id = @UserId
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            // model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                             ? (DateTime?)null
+                             : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -1674,7 +1989,7 @@ WHERE users_id = @UserId
                             //                    Grade = grade.ToString()
                             //                });
 
-                            //NEW CODE!!
+                            //NEW CODE!! Accept even non numeric 
                             string rawGrade = reader["grade"].ToString().Trim();
                             string subject = reader["subject"].ToString();
 
@@ -1839,11 +2154,15 @@ WHERE users_id = @UserId
 
             }
 
-
-
+            //NEW!! Array of grades
+            var grade = new[] { "1.0", "1.25", "1.5", "1.75", "2.0", "2.25", "2.5", "2.75", "3.0", "4", "5", "Incomplete", "Dropped", "Withdrawn" };
+            ViewBag.grade = grade;
+            //END OF NEW
 
             return View(model);
         }
+
+        //GRADE SUBMISSION
 
         [HttpPost]
         //Orig code
@@ -1880,6 +2199,7 @@ WHERE users_id = @UserId
 
                 model.GradeFile = "/files/" + fileName;      
             }
+            //END OF NEW
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -2181,7 +2501,7 @@ WHERE users_id = @UserId
 
 
 
-
+        //ATHLETE PROFILE
         public IActionResult AthleteProfile()
         {
 
@@ -2216,7 +2536,15 @@ WHERE users_id = @UserId
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -2291,10 +2619,12 @@ WHERE users_id = @UserId
             WHERE sp.users_id = @StudentId";
 
                 StudentAthleteProfileModel student = null;
-
+                //Orig Code
+                //DateOfBirth = reader["date_of_birth"].ToString(),
                 using (SqlCommand cmd = new SqlCommand(studentProfileQuery, conn))
                 {
                     cmd.Parameters.AddWithValue("@StudentId", userId);
+
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -2308,7 +2638,12 @@ WHERE users_id = @UserId
                                 Email = reader["email"].ToString(),
                                 Photo = reader["profile_image"].ToString(),
                                 ContactNumber = reader["contact_number"].ToString(),
-                                DateOfBirth = reader["date_of_birth"].ToString(),
+
+                                // ✅ Fixed: Properly handle nullable DateTime inside initializer
+                                DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                                    ? (DateTime?)null
+                                    : Convert.ToDateTime(reader["date_of_birth"]),
+
                                 Age = reader["age"].ToString(),
                                 Height = reader["height"].ToString(),
                                 Weight = reader["weight"].ToString(),
@@ -2337,12 +2672,14 @@ WHERE users_id = @UserId
                                 ProfileImagePath = reader["profile_image"].ToString(),
                                 CourseOne = reader["course_one"].ToString(),
                                 CourseTwo = reader["course_two"].ToString(),
-                                CourseThree = reader["course_three"].ToString(),
+                                CourseThree = reader["course_three"].ToString()
                             };
                         }
                     }
                 }
+
                 model.coachId = student.coachId;
+
 
                 if (student != null)
                 {
@@ -2812,7 +3149,15 @@ WHERE users_id = @UserId
                                 Email = reader["email"].ToString(),
                                 Photo = reader["profile_image"].ToString(),
                                 ContactNumber = reader["contact_number"].ToString(),
-                                DateOfBirth = reader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = reader["date_of_birth"].ToString(),
+
+                                //NEW!
+                                DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(reader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = reader["age"].ToString(),
                                 Height = reader["height"].ToString(),
                                 Weight = reader["weight"].ToString(),
