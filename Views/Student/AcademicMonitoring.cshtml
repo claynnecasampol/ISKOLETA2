@@ -9,10 +9,15 @@
     <div class="main-content-student">
         <div class="container-fluid p-5">
             <div class="mb-3">
-                <h2 class="m-0">Academic Monitoring</h2>
-                <p class="fs-4 text-muted m-0">Submit your academic information to monitor your qualification as a student-athlete</p>
+                <h3 class="m-0">Academic Monitoring</h3>
+                <p class="fs-5 text-muted m-0">Submit your academic information to monitor your qualification as a student-athlete</p>
             </div>
-            <div class="row tabs">
+            @*Orig Code no styling
+                <div class="row tabs">
+            *@
+
+            @* NEW!! Added a style for title *@
+            <div class="row tabs text-center" style="font-size: 1.3rem;">
                 <div class="col-lg-6">
                     <div class="tab active" data-target="#gradesView">Grades</div>
                 </div>
@@ -23,34 +28,122 @@
 
             <div id="gradesView" class="tab-content active">
                 <div class="card border-0" style="border-radius: 20px;">
-                    <form method="post" asp-controller="Student" asp-action="AcademicMonitoringGrade">
+                    @* 
+                        Orig code
+                    <form method="post" asp-controller="Student" asp-action="AcademicMonitoringGrade"> *@
+                    <form method="post" id="gradeForm" asp-controller="Student" asp-action="AcademicMonitoringGrade" enctype="multipart/form-data">
                         <div class="card-body m-3">
-                            <h2 class="mx-3">Semestral Grade</h2>
+                            <h3 class="mx-3" style="font-weight: bold;">Semestral Grade</h3>
+                            <p class="fs-5 text-muted m-0 mx-3">Add all subjects taken this semester</p>
                             <input type="hidden" name="userId" class="form-control" value="@Model.userId" />
 
                             <div class="card-body">
-                                <div id="subjectsWrapper">
-                                    <div class="row my-4 subject-row">
-                                        <div class="col-6">
+                                @* Orig Code
+                                    <div id="subjectsWrapper">
+                                    <div class="row g-2 subject-row d-flex">
+                                        
+                                        NEW!! Added a form number kung ilan na yung grade inputs and subject code
+                                        <div class="col-1">
+                                            <div class="form-group">
+                                                <label>No.</label>
+                                                <div class="form-control text-center fw-bold subject-number-box d-flex align-items-center justify-content-center" style="height: 50px; border-radius: 15px">
+                                                    <span class="subject-number">1</span>
+                                                    <input type="hidden" name="Number[]" value="1" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>Subject Code</label>
+                                                <input type="text" name="SubjectCode[]" class="form-control" />
+                                              
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
                                             <div class="form-group">
                                                 <label>Subject</label>
                                                 <input type="text" name="Subject[]" class="form-control" />
                                             </div>
                                         </div>
-                                        <div class="col-6">
+
+                                        <div class="col-4">
                                             <div class="form-group">
                                                 <label>Grade</label>
-                                                <input type="text" name="Grade[]" class="form-control" />
+                                                <select name="Grade[]" class="form-control grade-input"> *@
+
+                                @* NEW CODE!! *@
+                                <div id="subjectsWrapper">
+                                    <div class="row g-2 subject-row d-flex">
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <label>No.</label>
+                                                <div class="form-control text-center fw-bold subject-number-box d-flex align-items-center justify-content-center" style="height: 50px; border-radius: 15px">
+                                                    <span class="subject-number">1</span>
+                                                    <input type="hidden" name="Number[0]" value="1" />
+                                                </div>
+                                            </div>
+                                        </div>                                    
+
+                                        <div class="col-5">
+                                            <div class="form-group">
+                                                <label>Subject</label>
+                                                <input type="text" name="Subject[0]" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-5">
+                                            <div class="form-group">
+                                                <label>Grade</label>
+                                                <select name="Grade[0]" class="form-control grade-input">
+                                                    <option value="">Select Grade</option>
+                                                    <option value="1.0">1.0</option>
+                                                    <option value="1.25">1.25</option>
+                                                    <option value="1.5">1.5</option>
+                                                    <option value="1.75">1.75</option>
+                                                    <option value="2.0">2.0</option>
+                                                    <option value="2.25">2.25</option>
+                                                    <option value="2.5">2.5</option>
+                                                    <option value="2.75">2.75</option>
+                                                    <option value="3.0">3.0</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="Incomplete">Incomplete</option>
+                                                    <option value="Dropped">Dropped</option>
+                                                    <option value="Withdrawn">Withdrawn</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="text-start mt-4">
+                                @* Orig Code
+                                    <div class="text-start mt-4">
                                     <button type="button" id="addSubject" class="btn btn-lg btn-danger">Add Another Subject</button>
+                                </div> *@
+
+                                @* New code for Adding of subject *@
+                                <div class="text-start mt-4">
+                                    <button type="button" id="addSubject" class="btn btn-lg" style="background-color: green; border-radius: 12px; color: white; padding: 10px 20px; font-size: 1rem;">Add Another Subject</button>
+                                </div> 
+
+                                @* NEW!! Additional code for proof of submission of grades *@
+                                <div class="mx-auto" style="width: 100%; margin-top: 20px;">
+                                    <h5 style="font-weight: bold;">Supporting Documents</h5>
+                                    <p class="fs-6 text-muted m-0">Please upload a screenshot or document verifying your submitted grades</p>
+
+                                    <div class="card border-2 text-center mt-3">
+                                        <div class="py-2 w-100 bg-light position-relative">
+                                            <label class="fs-6">Upload Proof of Grades</label>
+                                            <input type="file" name="GradeFile" class="form-control position-absolute opacity-0" style="top: 0;" />
+                                        </div>
+                                    </div>
                                 </div>
+
+                                
                                 <div class="text-end mt-4">
-                                    <button type="submit" class="btn btn-lg btn-danger">Submit</button>
+                                    <button type="submit" class="btn btn-lg btn-danger" style="border-radius: 12px; color: white; padding: 10px 20px;">Submit</button>
                                 </div>
                             </div>
 
@@ -59,7 +152,14 @@
                     </form>
                 </div>
                 <br />
-                    <h2 class="mb-3">Grade Submission Details</h2>
+                @* Grades Submission Details *@
+
+                @* NEW!! Style the title and added a description for better understanding. *@
+                <div class="mb-3">
+                    <h3 class="m-0">Grade Submission Overview</h3>
+                    <p class="fs-5 text-muted m-0">Submitted grade records with supporting documents for academic monitoring.</p>
+                </div>
+
                 <div class="card border-0" style="border-radius: 20px;">
                     <div class="card-body m-3">
                         <h2>@Model.FirstName @Model.LastName</h2>
@@ -68,16 +168,45 @@
                             <span class="badge bg-success">QUALIFIED</span>
                         </div>
                         <br />
+                        @* NEW!!!
+                        Red pag At Risk, Blue kapag ok yung grades *@
+                        @{
+                            bool isAtRisk = ViewBag.IsQualified != null && !(bool)ViewBag.IsQualified;
+                            string borderClass = isAtRisk ? "border-danger" : "border-primary";
+                            string bgColor = isAtRisk ? "#ffe0e0" : "#e0eeff5c";
+                        }
+                        @* End of New *@
 
                         <ul class="list-group">
-                            <li class="list-group-item border-primary" style="background: #e0eeff5c;">
+                            @* Orig Code
+                            <li class="list-group-item border-primary" style="background: #e0eeff5c;"> *@
+
+                            @* Change color nung box depends on the result *@
+                            <li class="list-group-item @borderClass" style="background: @bgColor;">
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <span class="fw-bold">Semester GWA: @ViewBag.GWA.ToString("0.00")</span>
                                         <br />
-                                        <small>
+                                        @* Orig code
+                                            <small>
                                             Meets eligibility requirements ( <span style="text-decoration: underline;">&lt;</span>
-                                            2.5 )
+                                             3 )                                            
+                                        </small> *@
+
+                                        @* Added this to let the user know kung at risk ba sya or hindi  *@
+                                        <small>
+                                            @if (ViewBag.IsQualified != null && !(bool)ViewBag.IsQualified)
+                                            {
+                                                <span class="text-danger fw-semibold"> At Risk of being an Athlete (GWA ≥ 3 or disqualifying grade)</span>
+                                            }
+                                            else if (ViewBag.IsQualified != null && (bool)ViewBag.IsQualified)
+                                            {
+                                                <span class="text-success fw-semibold">Meets eligibility requirements (<span style="text-decoration: underline;"> &lt;</span> 3)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Eligibility status not available</span>
+                                            }
                                         </small>
                                     </div>
                                     <div>
@@ -111,12 +240,64 @@
 
                                 @foreach (var grade in (List<StudentAcademicMonitoringModel>)ViewBag.Grades)
                                 {
-                                    <tr>
-                                        <td>@grade.Subject</td>
-                                        <td class="fw-bold">@grade.Grade</td>
-                                    </tr>
+                                <tr>                                    
+                                    <td>@grade.Subject</td>
+                                    <td class="fw-bold">@grade.Grade</td>
+                                </tr>
                                 }
                         </table>
+
+                        @* NEW!! For File upload *@
+
+                        <h5 class="fw-bold mb-2">Uploaded Proof of Grades</h5>
+                        <div class="card border border-secondary bg-light text-center mt-3 py-1 px-3 d-flex flex-column justify-content-center align-items-center w-100">
+                            @{
+                                string filePath = null;
+
+                                // ✅ Prefer file from database (ViewBag.Grades)
+                                if (ViewBag.Grades is List<StudentAcademicMonitoringModel> gradesList)
+                                {
+                                    var firstWithFile = gradesList.FirstOrDefault(g => !string.IsNullOrEmpty(g.GradeFile));
+                                    if (firstWithFile != null)
+                                    {
+                                        filePath = firstWithFile.GradeFile;
+                                    }
+                                }
+
+                                // ✅ Fallback to TempData if no file in database
+                                if (filePath == null && TempData["FilePath"] != null)
+                                {
+                                    filePath = TempData["FilePath"].ToString();
+                                }
+                            }
+
+                            @if (!string.IsNullOrEmpty(filePath))
+                            {
+                                var extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                                <div class="mt-3">
+                                    <p class="text-muted">
+                                        Submitted file:
+                                        <a href="@filePath" target="_blank" class="text-primary text-decoration-underline">
+                                            @System.IO.Path.GetFileName(filePath)
+                                        </a>
+                                    </p>
+
+                                    @if (extension == ".pdf")
+                                    {
+                                        <embed src="@filePath" type="application/pdf" width="100%" height="600px" style="border-radius: 12px;" />
+                                    }
+                                    else if (extension == ".jpg" || extension == ".jpeg" || extension == ".png")
+                                    {
+                                        <img src="@filePath" alt="Proof of Grades" class="img-fluid rounded" style="max-height:600px;" />
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted my-3">No file uploaded yet.</p>
+                            }
+                        </div>
 
                     </div>
                 </div>
@@ -124,6 +305,8 @@
 
 
             </div>
+
+            @* Submission of COR *@
             <div id="registrationView" class="tab-content card border-0" style="border-radius: 20px;">
                 <form method="post" asp-controller="Student" asp-action="AcademicMonitoringAcademicRegistration" enctype="multipart/form-data">
                     <div class="card-body py-4 m-3">
@@ -164,7 +347,8 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
+@* Orig script
+    <script>
         $(document).ready(function() {
       $(".tab").click(function() {
         // alisin muna active state sa lahat
@@ -192,4 +376,116 @@
     });
 
 
+</script>*@
+
+@* New script *@
+<script>
+    $(document).ready(function () {
+
+        // 🔹 Tab switching logic
+        $(".tab").click(function () {
+            $(".tab").removeClass("active");
+            $(".tab-content").removeClass("active");
+            $(this).addClass("active");
+            $($(this).data("target")).addClass("active");
+        });
+
+        // 🔹 Add new subject row
+        $("#addSubject").click(function () {
+            var newRow = $(".subject-row:first").clone();
+
+            // Clear input and select values
+            newRow.find("input[type='text'], input[type='file']").val("");
+            newRow.find("select").val("");
+
+            // Remove any existing delete button before adding a new one
+            newRow.find(".remove-subject").closest(".col-2").remove();
+
+            // Add delete button for the new row
+            newRow.append(
+                $('<div class="col-2 d-flex align-items-end" style="margin-top: 20px;">')
+                    .append('<button type="button" class="btn btn-outline-danger btn-sm remove-subject">Delete</button>')
+            );
+
+            $("#subjectsWrapper").append(newRow);
+            updateSubjectNumbers(); // Renumber and re-index names
+        });
+
+        // 🔹 Renumber subject rows and update input names
+        function updateSubjectNumbers() {
+            $(".subject-row").each(function (index) {
+                const number = index + 1;
+                $(this).find(".subject-number").text(number);
+
+                // Update names with proper indices for ASP.NET Core model binding
+                $(this).find("input[name^='Number']").attr("name", `Number[${index}]`).val(number);
+                $(this).find("input[name^='Subject']").attr("name", `Subject[${index}]`);
+                $(this).find("select[name^='Grade']").attr("name", `Grade[${index}]`);
+            });
+        }
+
+        // 🔹 Remove subject row
+        $(document).on("click", ".remove-subject", function () {
+            $(this).closest(".subject-row").remove();
+            updateSubjectNumbers(); // Renumber after removing
+        });
+
+        // 🔹 Update label with uploaded file name
+        $(document).on("change", "input[type='file']", function () {
+            var fileName = $(this).val().split("\\").pop();
+            var label = $(this).siblings("label");
+            label.text(fileName || "Upload Proof of Grades");
+        });
+
+        // 🔹 Validate form before submission
+        $("#gradeForm").on("submit", function (e) {
+            let isValid = true;
+            let hasFile = $("input[name='GradeFile']").get(0)?.files.length > 0;
+
+            // Reset previous validation states
+            $(".grade-input, input[name^='Subject']").removeClass("is-invalid");
+            $("input[name='GradeFile']").removeClass("is-invalid");
+
+            // Validate each subject row
+            $(".subject-row").each(function (index) {
+                const subjectName = $(this).find("input[name^='Subject']").val().trim();
+                const grade = $(this).find("select[name^='Grade']").val().trim();
+
+                const isRowFilled = subjectName || grade;
+
+                // 🚫 If row is completely empty, block submission
+                if (!subjectName && !grade) {
+                    $(this).find("input[name^='Subject']").addClass("is-invalid");
+                    $(this).find("select[name^='Grade']").addClass("is-invalid");
+                    isValid = false;
+                    console.log(`Row ${index + 1} is completely empty.`);
+                }
+
+                // 🚫 If row is partially filled, also block submission
+                if (isRowFilled && (!subjectName || !grade)) {
+                    if (!subjectName) $(this).find("input[name^='Subject']").addClass("is-invalid");
+                    if (!grade) $(this).find("select[name^='Grade']").addClass("is-invalid");
+                    isValid = false;
+                    console.log(`Row ${index + 1} is partially filled.`);
+                }
+            });
+
+            // Validate file upload
+            if (!hasFile) {
+                $("input[name='GradeFile']").addClass("is-invalid");
+                isValid = false;
+                console.log("No file uploaded.");
+            }
+
+            // Prevent submission if invalid
+            if (!isValid) {
+                e.preventDefault();
+                alert("Please delete unused rows or complete all required fields and upload your proof of grades.");
+                $(".is-invalid:first")[0]?.scrollIntoView({ behavior: "smooth" });
+            }
+        });
+
+        // 🔹 Run once on page load to ensure correct initial indexing
+        updateSubjectNumbers();
+    });
 </script>
