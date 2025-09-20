@@ -72,9 +72,18 @@ namespace FITNSS.Controllers
                         insertCommand.Parameters.AddWithValue("@LastName", lastname);
                         insertCommand.Parameters.AddWithValue("@Email", email);
                         insertCommand.Parameters.AddWithValue("@PasswordHash", passwordHash);
-                        insertCommand.Parameters.AddWithValue("@Role", 1);
+                        //CHANGE THE ROLE INTO 3 SINCE THIS IS A STUDENT
+                        insertCommand.Parameters.AddWithValue("@Role", 3);
 
                         insertCommand.ExecuteNonQuery();
+
+                        //NEW!!
+                        //For updating the name depends on which user
+                        HttpContext.Session.SetString("firstName", firstname);
+                        //For prefilled the first name, last name, email in the edit profile 
+                        HttpContext.Session.SetString("lastName", lastname);
+                        HttpContext.Session.SetString("email", email);
+                        //END OF NEW
                     }
                 }
 

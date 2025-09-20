@@ -2,7 +2,6 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.WebHost.ConfigureKestrel(options =>
 {
     // Listen on all IPs at port 5183

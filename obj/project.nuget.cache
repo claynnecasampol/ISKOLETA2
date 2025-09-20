@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VV1N4Vws2JU=",
+  "dgSpecHash": "HjNPEyjK5Gw=",
   "success": true,
-  "projectFilePath": "C:\\capstone2\\FITNSS.csproj",
+  "projectFilePath": "C:\\Users\\ASUS\\Downloads\\capstone2\\FITNSS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -52,9 +52,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "Package 'Microsoft.AspNet.WebApi.Core 5.3.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
-      "projectPath": "C:\\capstone2\\FITNSS.csproj",
+      "projectPath": "C:\\Users\\ASUS\\Downloads\\capstone2\\FITNSS.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\capstone2\\FITNSS.csproj",
+      "filePath": "C:\\Users\\ASUS\\Downloads\\capstone2\\FITNSS.csproj",
       "libraryId": "Microsoft.AspNet.WebApi.Core",
       "targetGraphs": [
         "net8.0"
@@ -64,9 +64,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "Package 'Microsoft.AspNet.WebApi.WebHost 5.3.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
-      "projectPath": "C:\\capstone2\\FITNSS.csproj",
+      "projectPath": "C:\\Users\\ASUS\\Downloads\\capstone2\\FITNSS.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\capstone2\\FITNSS.csproj",
+      "filePath": "C:\\Users\\ASUS\\Downloads\\capstone2\\FITNSS.csproj",
       "libraryId": "Microsoft.AspNet.WebApi.WebHost",
       "targetGraphs": [
         "net8.0"

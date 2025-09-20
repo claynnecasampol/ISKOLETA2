@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace FITNSS.Models
 {
@@ -35,7 +36,13 @@ namespace FITNSS.Models
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string ContactNumber { get; set; } = string.Empty;
-        public string DateOfBirth { get; set; } = string.Empty;
+        //Orig Code
+        //public string DateOfBirth { get; set; } = string.Empty;
+
+        //NEW! Replace
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
+        //END OF NEW
         public string Age { get; set; } = string.Empty;
         public string Height { get; set; } = string.Empty;
         public string Weight { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using FITNSS.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +15,12 @@ namespace FITNSS.Controllers
 
         public IActionResult Index()
         {
+            //NEW!! For showing of first name in dashboard
+            var firstName = HttpContext.Session.GetString("firstName");
+            // ✅ Pass to ViewBag para magamit sa View
+            ViewBag.FirstName = firstName;
+            //END OF NEW
+
             return View();
         }
 

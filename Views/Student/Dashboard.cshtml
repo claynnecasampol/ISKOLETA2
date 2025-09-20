@@ -11,10 +11,25 @@
         <div class="container-fluid p-5">
             <div class="d-flex justify-content-between">
                 <div>
-                    <p class="fs-4 text-muted m-0">Good Morning</p>
-                    <h2 class="m-0 mb-3">
+                    @* 
+                        Orig Code
+                    <p class="fs-4 text-muted m-0">Good Morning</p> *@
+                    <p class="fs-4 text-muted m-0">@ViewBag.Greeting</p>
+                    @* Orig Code
+                        <h2 class="m-0 mb-3">
                         Hello, Franz
-                    </h2>
+                    </h2> *@
+                    @* NEW!! For Updating the name  *@
+                    @if (!string.IsNullOrEmpty(ViewBag.FirstName))
+                    {
+                        <h2>Hello, @ViewBag.FirstName!</h2>
+                    }
+                    else
+                    {
+                        <h2>Hello, Guest!</h2>
+                    }
+                    @* END OF NEW *@
+
                 </div>
                 <div class="position-relative">
                     <!-- Notification Bell -->
@@ -97,7 +112,10 @@
                                         <svg width="60" height="60" class="p-2 rounded-circle bg-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange"><path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z"></path></svg>
                                         Heartbeat</p>
                                     <h1 class="mt-4 fw-bold text-white">@ViewBag.HeartbeatValue bpm</h1>
-                                    <p class="text-white m-0">Target-80bpm</p>
+                                    @* Orig Code
+                                    <p class="text-white m-0">Target-80bpm</p> *@
+                                    @* NEW!! TARGET WILL NOW BASE ON THE BMI RESULTS*@  
+                                    <p class="text-white m-0">Target: @Model.TargetHeartbeat bpm</p>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +129,10 @@
                                         Steps
                                     </p>
                                     <h1 class="mt-4 fw-bold text-white">@ViewBag.StepsValue</h1>
-                                    <p class="text-white m-0">Target-12,000 per day</p>
+                                    @* Orig Code
+                                    <p class="text-white m-0">Target-12,000 per day</p> *@
+                                    @* NEW!! TARGET WILL NOW BASE ON THE BMI RESULTS*@
+                                    <p class="text-white m-0">Target: @Model.TargetSteps per day</p>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +146,10 @@
                                         Calories
                                     </p>
                                     <h1 class="mt-4 fw-bold text-white">@ViewBag.CaloriesValue kcal</h1>
-                                    <p class="text-white m-0">Target-150 kcal</p>
+                                    @* Orig code
+                                    <p class="text-white m-0">Target-150 kcal</p> *@
+                                    @* NEW!! TARGET WILL NOW BASE ON THE BMI RESULTS*@
+                                    <p class="text-white m-0">Target: @Model.TargetCalories kcal</p> 
                                 </div>
                             </div>
                         </div>

@@ -1,15 +1,24 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet');
 /*added a google font for Kanit and Montserrat 
 */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 html {
   font-size: 14px;
 }
+
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
 }
+
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -22,8 +31,10 @@ html {
 
 .main-wrapper {
     background: linear-gradient(to bottom, black, #E10101, black);
-    min-height: 100vh; 
-/*    added the min-height*/
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* This is essential */
+    width: 100%;
 }
 
 .sidebar {
@@ -121,12 +132,12 @@ input,select {
     word-break: break-word !important; /* break long words if needed */
     overflow: hidden;
     text-overflow: clip;
-    display: block;
     padding: 2px 4px;
     font-size: 0.85rem;
     line-height: 1.2;
     box-sizing: border-box;
     display: -webkit-box;
+    display: block;
     -webkit-line-clamp: 2; /* show max 2 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -153,7 +164,9 @@ input,select {
 .tab {
     padding: 10px 20px;
     cursor: pointer;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid gray;
+/*    NEW!!*/
+    color: gray;
 }
 
     .tab.active {
@@ -331,16 +344,6 @@ input,select {
     font-weight: 300;
 }
 
-.SignInUp {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 30px;
-    align-items: left;
-    margin-left: 50px;
-    font-family: 'Kanit', sans-serif;
-    color: #fff;
-}
-
 .button-link {
     padding: 12px 4vw;
     font-size: 1.8vw;
@@ -479,6 +482,9 @@ input,select {
 
 
 @media (max-width: 600px) {
+    .registration-box {
+        margin-top: 50px; /* or adjust as needed */
+    }
     body {
         height: 150vh;
     }
