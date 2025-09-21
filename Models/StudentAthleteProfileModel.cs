@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace FITNSS.Models
 {
     public class StudentAthleteProfileModel
     {
         public string userId { get; set; }
-        
+
         public string studentAthleteProfileId { get; set; }
 
         public string Photo { get; set; } = "";
         public string ProfileImagePath { get; set; } = "";
-        
+
         public string CourseOne { get; set; } = string.Empty;
         public string CourseTwo { get; set; } = string.Empty;
         public string CourseThree { get; set; } = string.Empty;
@@ -26,16 +27,22 @@ namespace FITNSS.Models
         public string GTwelveGwa { get; set; } = string.Empty;
         public string TransferStatus { get; set; } = string.Empty;
         public string PrevProgramOrCourse { get; set; } = string.Empty;
-        public string Vaccination { get; set; }  = string.Empty;
-        public string PhilhealthNumber { get; set; }  = string.Empty;
-        public string Event { get; set; }  = string.Empty;
-        public string HomeAddress { get; set; }  = string.Empty;
-        public string ProvincialAddress { get; set; }  = string.Empty;
+        public string Vaccination { get; set; } = string.Empty;
+        public string PhilhealthNumber { get; set; } = string.Empty;
+        public string Event { get; set; } = string.Empty;
+        public string HomeAddress { get; set; } = string.Empty;
+        public string ProvincialAddress { get; set; } = string.Empty;
         public string Portfolio { get; set; } = "";
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string ContactNumber { get; set; } = string.Empty;
-        public string DateOfBirth { get; set; } = string.Empty;
+        //Orig Code
+        //public string DateOfBirth { get; set; } = string.Empty;
+
+        //NEW! Replace
+        [DataType(DataType.Date)]
+        public DateTime? DateOfBirth { get; set; }
+        //END OF NEW
         public string Age { get; set; } = string.Empty;
         public string Height { get; set; } = string.Empty;
         public string Weight { get; set; } = string.Empty;

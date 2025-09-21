@@ -1,123 +1,469 @@
 ﻿@{
     ViewData["Title"] = "Student Profile";
+
+    // ✅ Null-safe check for ViewBag values (avoid runtime error)
+    bool showForm = (ViewBag.ShowForm as bool?) ?? false;
+    bool showAfterEdit = (ViewBag.ShowAfterEdit as bool?) ?? false;
+    
+    // Create a default avatar SVG for fallback
+    string defaultAvatar = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSI3NSIgZmlsbD0iI2Y4ZjlmYSIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iNjAiIHI9IjI1IiBmaWxsPSIjNmM3NTdkIi8+PHBhdGggZD0ibTI1IDEyNWE1MCA1MCAwIDAgMSAxMDAgMCIgZmlsbD0iIzZjNzU3ZCIvPjwvc3ZnPg==";
 }
+
 @model FITNSS.Models.StudentProfileModel
 
-<div class="d-flex">
+<!-- CSS for better profile image handling -->
+<style>
+    .profile-image {
+        width: 150px !important;
+        height: 150px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 3px solid #000 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        background-color: #f8f9fa;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    
+    .profile-image-container {
+        position: relative;
+        display: inline-block;
+    }
+</style>
 
+<div class="d-flex">
     @Html.Partial("Sidebar")
+
     <div class="main-content-student">
         <div class="container-fluid p-5">
             <div class="mb-3">
                 <h2 class="m-0">Profile</h2>
-                <p class="fs-4 text-muted m-0">Manage your account information and coach verification</p>
+                <p class="fs-5 text-muted m-0">Manage your account information and coach verification</p>
             </div>
-            <div class="card">
-                <form method="post" enctype="multipart/form-data" asp-controller="Student" asp-action="Profile">
-                    <input type="hidden" name="userId" value="@Model.userId" />
+
+          @* AFTER EDIT *@
+            @if (showAfterEdit)
+            {
+                <div class="card border-0" style="border-radius: 20px;">
                     <div class="card-body m-3">
-                        <h2 class="mx-3">Edit Profile</h2>
-                        <div class="card-body m-0 d-flex align-items-center">
-                            <div class="px-3">
-                                <img id="profileImage" class="rounded-circle border border-2 border-dark" src="~/images/profile.png" alt="User Image" style="width:150px; height:150px;">
+                        <h3 class="text-start fw-bold">Profile</h3>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-image-container mb-3">
+                                    <img class="profile-image"
+                                         src="@(string.IsNullOrEmpty(Model.ProfileImagePath) ? defaultAvatar : Model.ProfileImagePath)"
+                                         alt="User Image"
+                                         onerror="this.src='@defaultAvatar';">
+                                </div>
+                                <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
                             </div>
-                            <div>
-                                <p class="m-0 fs-4 fw-bold">@Model.FirstName @Model.LastName</p>
-                                <p class="m-0 text-muted">EMAIL: @Model.Email</p>
-                                <p class="text-primary m-0 position-relative">
-                                    Change Photo
-                                    <input type="file" name="ProfilePhoto" id="ProfilePhoto" accept="image/*" class="form-control mt-1 position-absolute top-0 opacity-0" style="height: 20px;" />
-                                </p>
-                                
+
+                            <div class="col-md-8">
+                                <h5 class="fw-bold mb-2">Personal Information</h5>
+                                <p class="text-muted mb-1">Email: @Model.Email</p>
+                                <p class="text-muted mb-1">Contact: @Model.ContactNumber</p>
+                                <p class="text-muted mb-1">Birthday: @(Model.DateOfBirth?.ToString("MMMM dd, yyyy") ?? "Not set")</p>
+
+                                <h5 class="fw-bold mt-3 mb-2">Academic & Sports Information</h5>
+                                <p class="text-muted mb-1">Course: @(string.IsNullOrEmpty(Model.Course) ? "Not set" : Model.Course)</p>
+                                <p class="text-muted mb-1">Year Level: @(string.IsNullOrEmpty(Model.YearLevel) ? "Not set" : Model.YearLevel)</p>
+                                <p class="text-muted mb-1">Emergency Contact: @(string.IsNullOrEmpty(Model.EmergencyContact) ? "Not set" : Model.EmergencyContact)</p>
+                                <p class="text-muted mb-1">Sport: @(string.IsNullOrEmpty(Model.Sport) ? "Not set" : Model.Sport)</p>
                             </div>
                         </div>
 
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <h2>Perosnal Information</h2>
-                                    <div class="row" style="row-gap: 1rem;">
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label>First Name</label>
-                                                <input type="text" name="FirstName" class="form-control" value="@Model.FirstName" />
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label>Last Name</label>
-                                                <input type="text" name="LastName" class="form-control" value="@Model.LastName" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Email</label>
-                                                <input type="email" name="Email" class="form-control" value="@Model.Email" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Contact Number</label>
-                                                <input type="text" name="ContactNumber" class="form-control" value="@Model.ContactNumber" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Date of Birth</label>
-                                                <input type="date" name="DateOfBirth" class="form-control"
-                                                       value="@(Model.DateOfBirth != null ? Convert.ToDateTime(Model.DateOfBirth).ToString("yyyy-MM-dd") : "")" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <h2>Academic & Sports Information</h2>
-                                    <div class="row" style="row-gap: 1rem;">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Course</label>
-                                                <input type="text" name="Course" class="form-control" value="@Model.Course" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Year Level</label>
-                                                <select asp-for="YearLevel" asp-items="ViewBag.YearLevels" class="form-control">
-                                                    <option value="">-- Select YearLevel --</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Emergency Contact</label>
-                                                <input type="text" name="EmergencyContact" class="form-control" value="@Model.EmergencyContact" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Sport</label>
-                                                <select asp-for="Sport" asp-items="ViewBag.Sports" class="form-control">
-                                                    <option value="">-- Select Sport --</option>
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-end mt-4">
-                                <button type="submit" class="btn btn-lg btn-danger">Save Profile</button>
-                            </div>
+                        <div class="text-end mt-4">
+                            @* Show Get Verified button only if not verified or rejected *@
+                            @if (string.IsNullOrEmpty(Model.VerificationStatus) || Model.VerificationStatus == "rejected")
+                            {
+                                <button id="btnGetVerified" class="btn btn-lg btn-dark me-2" style="border-radius: 12px; padding: 10px 20px;">
+                                    Get Verified
+                                </button>
+                            }
+                            
+                            <a class="btn btn-lg btn-danger" style="border-radius: 12px; padding: 10px 20px;"
+                               href="@Url.Action("Profile", "Student", new { showForm = true })">
+                                Edit Profile
+                            </a>
+                            
+                            <a class="btn btn-lg btn-secondary ms-2" style="border-radius: 12px; padding: 10px 20px;"
+                               href="@Url.Action("Profile", "Student")">
+                                Back to Profile
+                            </a>
                         </div>
-
                     </div>
-                </form>
+                </div>
+            }
+            @* BEFORE EDIT STATE *@
+            else if (!showForm)
+            {
+                <div class="card border-0" style="border-radius: 20px;">
+                    <div class="card-body m-3">
+                        <div class="row mt-4">
+                            <div class="col-md-4 text-center">
+                                <div class="profile-image-container mb-3">
+                                    <img class="profile-image"
+                                         src="@(string.IsNullOrEmpty(Model.ProfileImagePath) ? defaultAvatar : Model.ProfileImagePath)"
+                                         alt="User Image"
+                                         onerror="this.src='@defaultAvatar';">
+                                </div>
+                                <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
+                            </div>
 
+                            <div class="col-md-8">
+                                <h5 class="fw-bold mb-2">Personal Information</h5>
+                                <p class="text-muted mb-1">Email: @Model.Email</p>
+                                <p class="text-muted mb-1">Contact: @Model.ContactNumber</p>
+                                <p class="text-muted mb-1">Birthday: @(Model.DateOfBirth?.ToString("MMMM dd, yyyy") ?? "Not set")</p>
+
+                                <h5 class="fw-bold mt-3 mb-2">Academic & Sports Information</h5>
+                                <p class="text-muted mb-1">Course: @(string.IsNullOrEmpty(Model.Course) ? "Not set" : Model.Course)</p>
+                                <p class="text-muted mb-1">Year Level: @(string.IsNullOrEmpty(Model.YearLevel) ? "Not set" : Model.YearLevel)</p>
+                                <p class="text-muted mb-1">Emergency Contact: @(string.IsNullOrEmpty(Model.EmergencyContact) ? "Not set" : Model.EmergencyContact)</p>
+                                <p class="text-muted mb-1">Sport: @(string.IsNullOrEmpty(Model.Sport) ? "Not set" : Model.Sport)</p>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <div class="d-flex justify-content-end mb-2">
+                                @if (string.IsNullOrEmpty(Model.VerificationStatus) || Model.VerificationStatus == "rejected")
+                                {
+                                    <button id="btnGetVerified" class="btn btn-dark btn-lg me-2" style="border-radius:12px;">Get Verified</button>
+                                }
+                                <a class="btn btn-lg btn-danger" style="border-radius: 12px;" href="@Url.Action("Profile", "Student", new { showForm = true })">Edit Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @* DURING EDIT STATE *@
+            else
+            {
+                <div class="card">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Student" asp-action="Profile">
+                        <input type="hidden" name="userId" value="@Model.userId" />
+                        <div class="card-body m-3">
+                            <h2 class="mx-3">Edit Profile</h2>
+                            <div class="card-body m-0 d-flex align-items-center">
+                                <div class="px-3">
+                                    <div class="profile-image-container">
+                                        <img id="profileImage" class="profile-image"
+                                             src="@(string.IsNullOrEmpty(Model.ProfileImagePath) ? defaultAvatar : Model.ProfileImagePath)"
+                                             alt="User Image"
+                                             onerror="this.src='@defaultAvatar';">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="m-0 fs-4 fw-bold">@Model.FirstName @Model.LastName</p>
+                                    <p class="m-0 text-muted">EMAIL: @Model.Email</p>
+                                    <p class="text-primary m-0 position-relative">
+                                        Change Photo
+                                        <input type="file" name="ProfilePhoto" id="ProfilePhoto" accept="image/*"
+                                               class="form-control mt-1 position-absolute top-0 opacity-0"
+                                               style="height: 20px;" />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    @* Personal Information *@
+                                    <div class="col-12 col-md-6">
+                                        <h4>Personal Information</h4>
+                                        <div class="row" style="row-gap: 1rem;">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>First Name</label>
+                                                    <input type="text" name="FirstName" class="form-control" value="@Model.FirstName" />
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>Last Name</label>
+                                                    <input type="text" name="LastName" class="form-control" value="@Model.LastName" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="email" name="Email" class="form-control" value="@Model.Email" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Contact Number</label>
+                                                    <input type="text" name="ContactNumber" class="form-control" placeholder="e.g. 0912345678" value="@Model.ContactNumber" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Date of Birth</label>
+                                                    @Html.TextBoxFor(model => model.DateOfBirth,
+                                                        new { @class = "form-control", type = "date",
+                                                              value = Model.DateOfBirth.HasValue ? Model.DateOfBirth.Value.ToString("yyyy-MM-dd") : "" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Academic & Sports Information *@
+                                    <div class="col-12 col-md-6">
+                                        <h4>Academic & Sports Information</h4>
+                                        <div class="row" style="row-gap: 1rem;">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Course</label>
+                                                    <input type="text" name="Course" class="form-control" placeholder="e.g. BS Information Technology" value="@Model.Course" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Year Level</label>
+                                                    <select asp-for="YearLevel" asp-items="ViewBag.YearLevels" class="form-control">
+                                                        <option value="">Select Year Level</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Emergency Contact</label>
+                                                    <input type="text" name="EmergencyContact" class="form-control" placeholder="e.g. Juan Dela Cruz - 0912345678" value="@Model.EmergencyContact" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Sport</label>
+                                                    <select asp-for="Sport" asp-items="ViewBag.Sports" class="form-control">
+                                                        <option value="">Select Sport</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-lg btn-danger"
+                                        style="border-radius: 12px; color: white; padding: 10px 20px;">
+                                    Save Profile
+                                </button>
+
+                                <a class="btn btn-lg btn-outline-secondary ms-2"
+                                   style="border-radius: 12px; padding: 10px 20px; font-weight: 600;"
+                                   href="@Url.Action("Profile", "Student", new { showForm = false })">
+                                    Cancel
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            }
+
+
+           <!-- COACH VERIFICATION SECTION -->
+            <div class="mb-3">
+                    <h3>Coach Verification</h3>
+                    <p class="fs-5 text-muted m-0">Submit verification to your coach to get exclusive access to your team sport.</p>
+                </div>
+            <div class="card border-0 mb-4 mt-4" style="border-radius: 20px;">
+                <div class="card-body">          
+                    @{
+                        string verificationBorderClass = "";
+                        string verificationBgColor = "";
+                        string verificationBadgeClass = "";
+                        string verificationStatus = "";
+                        string verificationSecondaryBadge = "";
+                        string verificationSecondaryBadgeClass = "";
+
+                        if (Model.VerificationStatus == "verified")
+                        {
+                            verificationBorderClass = "border-success";
+                            verificationBgColor = "#d4edda";
+                            verificationBadgeClass = "bg-success";
+                            verificationStatus = "VERIFIED";
+                            verificationSecondaryBadge = "FULL ACCESS";
+                            verificationSecondaryBadgeClass = "bg-success";
+                        }
+                        else if (Model.VerificationStatus == "pending")
+                        {
+                            verificationBorderClass = "border-warning";
+                            verificationBgColor = "#fff3cd";
+                            verificationBadgeClass = "bg-warning text-dark";
+                            verificationStatus = "PENDING";
+                            verificationSecondaryBadge = "AWAITING APPROVAL";
+                            verificationSecondaryBadgeClass = "bg-info";
+                        }
+                        else if (Model.VerificationStatus == "rejected")
+                        {
+                            verificationBorderClass = "border-danger";
+                            verificationBgColor = "#f8d7da";
+                            verificationBadgeClass = "bg-danger";
+                            verificationStatus = "REJECTED";
+                            verificationSecondaryBadge = "ACCESS DENIED";
+                            verificationSecondaryBadgeClass = "bg-secondary";
+                        }
+                        else
+                        {
+                            verificationBorderClass = "border-primary";
+                            verificationBgColor = "#e0eeff5c";
+                            verificationBadgeClass = "bg-primary";
+                            verificationStatus = "NOT VERIFIED";
+                            verificationSecondaryBadge = "LIMITED ACCESS";
+                            verificationSecondaryBadgeClass = "bg-secondary";
+                        }
+                    }                  
+                        <div class="card-body px-4 py-3">
+                            <h3 class="mb-2">@Model.FirstName @Model.LastName</h3>
+
+                            <div class="mx-auto" style="max-width: 900px;">
+                                <div class="mb-3">
+                                    <span class="badge @verificationBadgeClass me-2">@verificationStatus</span>
+                                    <span class="badge @verificationSecondaryBadgeClass">@verificationSecondaryBadge</span>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item @verificationBorderClass" style="background: @verificationBgColor;">
+                                        <div class="d-flex justify-content-between flex-wrap">
+                                            <div class="mb-2">
+                                                @* Status Message *@
+                                                @if (Model.VerificationStatus == "verified")
+                                                {
+                                                    <span class="fw-bold">Verification Status: Verified</span><br />
+                                                    <small class="text-success fw-semibold">✓ You have full access to all platform features</small>
+                                                }
+                                                else if (Model.VerificationStatus == "pending")
+                                                {
+                                                    <span class="fw-bold">Verification Status: Pending Approval</span><br />
+                                                    <small class="text-warning fw-semibold">Your verification is awaiting coach approval</small>
+                                                }
+                                                else if (Model.VerificationStatus == "rejected")
+                                                {
+                                                    <span class="fw-bold">Verification Status: Rejected</span><br />
+                                                    <small class="text-danger fw-semibold">
+                                                        @(string.IsNullOrEmpty(Model.VerificationRemarks) ? "Verification was rejected by your coach" : Model.VerificationRemarks)
+                                                    </small>
+                                                }
+                                                else
+                                                {
+                                                    <span class="fw-bold">Verification Status: Not Verified</span><br />
+                                                    <small class="text-primary fw-semibold">Get verified by your coach to unlock full platform features</small>
+                                                }
+                                            </div>
+
+                                            <div>
+                                                @* Date Info *@
+                                                @if (Model.VerificationStatus == "verified" && Model.DateVerified.HasValue)
+                                                {
+                                                    <span class="fw-bold">Verified Date:</span><br />
+                                                    <small>@Model.DateVerified.Value.ToString("MMMM dd, yyyy")</small>
+                                                }
+                                                else if (Model.VerificationStatus == "pending" && Model.DateRequested.HasValue)
+                                                {
+                                                    <span class="fw-bold">Request Date:</span><br />
+                                                    <small>@Model.DateRequested.Value.ToString("MMMM dd, yyyy")</small>
+                                                }
+                                                else if (Model.VerificationStatus == "rejected" && Model.DateRequested.HasValue)
+                                                {
+                                                    <span class="fw-bold">Rejected Date:</span><br />
+                                                    <small>@Model.DateRequested.Value.ToString("MMMM dd, yyyy")</small>
+                                                }
+                                                else
+                                                {
+                                                    <span class="fw-bold">Status:</span><br />
+                                                    <small>No request submitted</small>
+                                                }
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                @* Additional Details *@
+                                @if (!string.IsNullOrEmpty(Model.SelectedSport) || !string.IsNullOrEmpty(Model.SelectedCoachId))
+                                {
+                                    <ul class="list-group mt-3">
+                                        <li class="list-group-item d-flex align-items-center">
+                                            @* Status Icon *@
+                                            @{
+                                                string iconColor = Model.VerificationStatus switch
+                                                {
+                                                    "verified" => "green",
+                                                    "pending" => "orange",
+                                                    "rejected" => "red",
+                                                    _ => "blue"
+                                                };
+                                            }
+                                            <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="@iconColor">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/>
+                                            </svg>
+
+                                            <span class="fw-bold ms-2">Sport:</span> @(Model.SelectedSport ?? "Not specified")
+                                            @if (!string.IsNullOrEmpty(Model.SelectedCoachId))
+                                            {
+                                                <span class="fw-bold ms-4">Coach ID:</span> @Model.SelectedCoachId
+                                            }
+                                        </li>
+                                    </ul>
+                                }
+
+                                @* Verification Form *@
+                                <div id="coachVerificationForm" style="display:none;" class="mt-4">
+                                    <form asp-action="RequestVerification" asp-controller="Student" method="post" class="mb-3">
+                                        <div class="row gx-3">
+                                            <div class="col">
+                                                <label for="sportDropdown" class="form-label mb-1">Sport <span class="text-danger">*</span></label>
+                                                <select name="sport" id="sportDropdown" class="form-select" required>
+                                                    <option value="">Select Sport</option>
+                                                    @foreach (var sport in ViewBag.Sports as SelectList)
+                                                    {
+                                                        <option value="@sport.Value">@sport.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="coachDropdown" class="form-label mb-1">Coach <span class="text-danger">*</span></label>
+                                                <select name="coachId" id="coachDropdown" class="form-select" required>
+                                                    <option value="">Select Coach</option>
+                                                    @foreach (var coach in Model.CoachList)
+                                                    {
+                                                        <option value="@coach.Value">@coach.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end mt-4">
+                                            <button type="submit" class="btn btn-danger btn-lg me-2" style="border-radius:12px;">Submit Request</button>
+                                            <button type="button" id="btnCancelVerification" class="btn btn-outline-secondary btn-lg" style="border-radius:12px;">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                @* Pending Box *@
+                                <div class="mt-3">
+                                    @if (Model.VerificationStatus == "pending")
+                                    {
+                                        <div class="alert alert-warning mb-0">
+                                            Pending Coach Verification for <b>@Model.SelectedSport</b>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-light text-muted border mb-0" style="background:#ffffe0;">
+                                            No pending coach verification yet
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                </div>
             </div>
         </div>
     </div>
+
     @Html.Partial("RightSidebar")
 </div>
 
@@ -125,20 +471,41 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Check if the model has a ProfileImagePath
+            // 🔹 Profile image preview with better error handling
             var profilePath = '@Model.ProfileImagePath';
-
             if (profilePath && profilePath !== '') {
                 $('#profileImage').attr('src', profilePath);
             }
 
-            // Optional: Preview image when user selects a new file
-            $('#ProfilePhoto').on('change', function (e) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#profileImage').attr('src', e.target.result);
+            $('#ProfilePhoto').on('change', function () {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#profileImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(this.files[0]);
                 }
-                reader.readAsDataURL(this.files[0]);
+            });
+
+            // 🔹 Show coach verification form
+            $('#btnGetVerified').click(function () {
+                $('#coachVerificationForm').slideDown();
+                $(this).hide();
+            });
+
+            // 🔹 Cancel verification form
+            $('#btnCancelVerification').click(function () {
+                $('#coachVerificationForm').slideUp();
+                $('#btnGetVerified').show();
+                // Reset form fields
+                $('#sportDropdown').val('');
+                $('#coachDropdown').val('');
+            });
+
+            // 🔹 Update coach list based on selected sport
+            $('#sportDropdown').change(function () {
+                var selectedSport = $(this).val();
+                window.location.href = '@Url.Action("Profile", "Student")' + '?selectedSport=' + encodeURIComponent(selectedSport);
             });
         });
     </script>

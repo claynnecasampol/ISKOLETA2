@@ -65,7 +65,15 @@ namespace FITNSS.Controllers
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -454,7 +462,7 @@ WHERE users_id = @UserId
             return View(model);
         }
 
-       
+
 
 
         [HttpGet]
@@ -525,7 +533,15 @@ WHERE users_id = @UserId
                                 Email = roleReader["email"].ToString(),
                                 Photo = roleReader["profile_image"].ToString(),
                                 ContactNumber = roleReader["contact_number"].ToString(),
-                                DateOfBirth = roleReader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = roleReader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = roleReader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(roleReader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = roleReader["age"].ToString(),
                                 Height = roleReader["height"].ToString(),
                                 Weight = roleReader["weight"].ToString(),
@@ -647,7 +663,15 @@ WHERE users_id = @UserId
                                 Email = roleReader["email"].ToString(),
                                 Photo = roleReader["profile_image"].ToString(),
                                 ContactNumber = roleReader["contact_number"].ToString(),
-                                DateOfBirth = roleReader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = roleReader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = roleReader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(roleReader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = roleReader["age"].ToString(),
                                 Height = roleReader["height"].ToString(),
                                 Weight = roleReader["weight"].ToString(),
@@ -777,7 +801,15 @@ WHERE users_id = @UserId
                                 Email = roleReader["email"].ToString(),
                                 Photo = roleReader["profile_image"].ToString(),
                                 ContactNumber = roleReader["contact_number"].ToString(),
-                                DateOfBirth = roleReader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = roleReader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = roleReader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(roleReader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = roleReader["age"].ToString(),
                                 Height = roleReader["height"].ToString(),
                                 Weight = roleReader["weight"].ToString(),
@@ -814,7 +846,14 @@ WHERE users_id = @UserId
                                 Email = roleReader["email"].ToString(),
                                 Photo = roleReader["profile_image"].ToString(),
                                 ContactNumber = roleReader["contact_number"].ToString(),
-                                DateOfBirth = roleReader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = roleReader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = roleReader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(roleReader["date_of_birth"]),
+                                //END OF NEW
                                 Age = roleReader["age"].ToString(),
                                 Height = roleReader["height"].ToString(),
                                 Weight = roleReader["weight"].ToString(),
@@ -972,7 +1011,15 @@ WHERE users_id = @UserId
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -1134,7 +1181,15 @@ WHERE users_id = @UserId
                             model.YearLevel = reader["year_level"].ToString();
                             model.ContactNumber = reader["contact_number"].ToString();
                             model.EmergencyContact = reader["emergency_contact"].ToString();
-                            model.DateOfBirth = reader["date_of_birth"].ToString();
+                            //Orig Code
+                            //model.DateOfBirth = reader["date_of_birth"].ToString();
+
+                            //NEW!!
+                            model.DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                            ? (DateTime?)null
+                            : Convert.ToDateTime(reader["date_of_birth"]);
+                            //END OF NEW
+
                             model.Age = reader["age"].ToString();
                             model.Sport = reader["sport"].ToString();
                             model.ProfileImagePath = reader["profile_image"].ToString();
@@ -1316,7 +1371,14 @@ WHERE users_id = @UserId
                                 Email = roleReader["email"].ToString(),
                                 Photo = roleReader["profile_image"].ToString(),
                                 ContactNumber = roleReader["contact_number"].ToString(),
-                                DateOfBirth = roleReader["date_of_birth"].ToString(),
+                                //DateOfBirth = roleReader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = roleReader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(roleReader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = roleReader["age"].ToString(),
                                 Height = roleReader["height"].ToString(),
                                 Weight = roleReader["weight"].ToString(),
@@ -1447,7 +1509,15 @@ WHERE users_id = @UserId
                                 Email = reader["email"].ToString(),
                                 Photo = reader["profile_image"].ToString(),
                                 ContactNumber = reader["contact_number"].ToString(),
-                                DateOfBirth = reader["date_of_birth"].ToString(),
+                                //Orig Code
+                                //DateOfBirth = reader["date_of_birth"].ToString(),
+
+                                //NEW!!
+                                DateOfBirth = reader["date_of_birth"] == DBNull.Value
+                                ? (DateTime?)null
+                                : Convert.ToDateTime(reader["date_of_birth"]),
+                                //END OF NEW
+
                                 Age = reader["age"].ToString(),
                                 Height = reader["height"].ToString(),
                                 Weight = reader["weight"].ToString(),

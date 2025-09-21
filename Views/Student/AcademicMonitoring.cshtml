@@ -252,22 +252,13 @@
                         <h5 class="fw-bold mb-2">Uploaded Proof of Grades</h5>
                         <div class="card border border-secondary bg-light text-center mt-3 py-1 px-3 d-flex flex-column justify-content-center align-items-center w-100">
                             @{
-                                string filePath = null;
+                                string filePath = "";
 
-                                // ✅ Prefer file from database (ViewBag.Grades)
+                                // Get file path from the first grade record that has a file
                                 if (ViewBag.Grades is List<StudentAcademicMonitoringModel> gradesList)
                                 {
-                                    var firstWithFile = gradesList.FirstOrDefault(g => !string.IsNullOrEmpty(g.GradeFile));
-                                    if (firstWithFile != null)
-                                    {
-                                        filePath = firstWithFile.GradeFile;
-                                    }
-                                }
-
-                                // ✅ Fallback to TempData if no file in database
-                                if (filePath == null && TempData["FilePath"] != null)
-                                {
-                                    filePath = TempData["FilePath"].ToString();
+                                    var gradeWithFile = gradesList.FirstOrDefault(g => !string.IsNullOrEmpty(g.GradeFile));
+                                    filePath = gradeWithFile?.GradeFile ?? "";
                                 }
                             }
 
